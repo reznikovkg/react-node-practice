@@ -10,27 +10,11 @@ import {
 } from 'semantic-ui-react';
 
 
-import  { connect } from 'react-redux';
-
-
-import startAction from './actions/startAction';
-import stopAction from './actions/stopAction';
-
-const mapStateToProps = state => ({
-    ...state
-});
-const mapDispatchToProps = dispatch => ({
-    startAction: () => dispatch(startAction),
-    stopAction: () => dispatch(stopAction)
-});
-
 class App extends Component {
     render() {
-
         return (
             <div>
                 <MainMenu/>
-
                 <Container>
                     <Container style={ {marginTop: '150px'} }>
                         {
@@ -38,10 +22,9 @@ class App extends Component {
                         }
                     </Container>
                 </Container>
-
             </div>
         );
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

@@ -131,9 +131,14 @@ app.get('/connect', function (req, res, next) {
             res.send({
                 'id': user.id,
                 'isActivate': user.isActivate,
-                'isAdmin': user.isAdmin,
+                'type': user.type,
                 'username': user.username,
-                'birthday': user.birthday
+                'birthday': user.birthday,
+                'gender': user.gender,
+                'phone': user.phone,
+                'address': user.address,
+                'photo': user.address
+
             });
         });
 });

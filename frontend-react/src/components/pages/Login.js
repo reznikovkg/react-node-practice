@@ -9,20 +9,17 @@ import {
 } from 'semantic-ui-react';
 
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import ApiList from './../../ApiList';
 
-
 import  { connect } from 'react-redux';
-
 
 const mapStateToProps = state => ({
     ...state
 });
 const mapDispatchToProps = dispatch => ({
-    setToken: (token) => dispatch({ type:'SET_TOKEN', payload: token })
+    setToken: (payload) => dispatch({ type:'SET_USER_TOKEN', payload })
 });
-
-
 
 class Login extends Component{
     constructor(props) {
@@ -44,10 +41,12 @@ class Login extends Component{
             }
         })
             .then((response) => {
+                Cookies.set('user_token', response.data.token, { expires: 7 });
                 this.props.setToken(response.data.token);
             })
             .catch((error) => {
-                console.log('error');
+                console.log('error: ', error);
+                this.props.setToken(null);
             })
     };
 
@@ -71,7 +70,7 @@ class Login extends Component{
                 <Grid centered columns={2}>
                     <Grid.Column>
                         <Segment color='green'>
-                            <Header>Авторизация</Header>
+                            <Header>Авторизация { this.props.state }</Header>
                             <Form>
                                 <Form.Field>
                                     <label>Логин</label>
@@ -81,9 +80,8 @@ class Login extends Component{
                                     <label>Пароль</label>
                                     <input placeholder='Введите пароль' type='password' onChange={ this.handleChangeFormPassword }/>
                                 </Form.Field>
-                                <Button type='submit' color='green' onClick={ this.toLogin }>Submit</Button>
+                                <Button type='submit' color='green' onClick={ this.toLogin }>Войти</Button>
                             </Form>
-
                         </Segment>
                     </Grid.Column>
                 </Grid>
