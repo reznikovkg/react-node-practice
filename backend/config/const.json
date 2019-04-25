@@ -1,0 +1,30 @@
+{
+  "status": {
+    "OK": {
+      "CODE": "200",
+      "MESSAGE": "Успешно"
+    },
+    "NO_CONTENT": {
+      "CODE": "204",
+      "MESSAGE": "Нет содержимого"
+    },
+    "FOUND": {
+      "CODE": "302",
+      "MESSAGE": "Найдено"
+    },
+    "FORBIDDEN": {
+      "CODE": "403",
+      "MESSAGE": "Нет доступа"
+    },
+    "NOT_FOUND": {
+      "CODE": "404",
+      "MESSAGE": "Не найдено"
+    },
+    "INTERVAL_SERVER_ERROR": {
+      "CODE": "500",
+      "MESSAGE": "Ошибка сервера"
+    }
+  },
+  "domainClient": "http://localhost:8080",
+  "domainServer": "http://localhost:8888"
+}

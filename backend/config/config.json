@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "root",
+    "password": "1111",
+    "database": "dsr_db",
+    "host": "127.0.0.1",
+    "port": "3306",
+    "dialect": "mysql"
+  },
+  "docker": {
+    "username": "root",
+    "password": "1111",
+    "database": "dsr_db",
+    "host": "db",
+    "port": "3306",
+    "dialect": "mysql"
+  },
+  "local": {
+    "username": "root",
+    "password": "1111",
+    "database": "dsr_db",
+    "host": "127.0.0.1",
+    "port": "3306",
+    "dialect": "mysql"
+  }
+}
