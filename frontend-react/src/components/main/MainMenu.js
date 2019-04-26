@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {Link} from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 import {
     Menu
@@ -8,6 +8,7 @@ import {
 
 import RouterList from './../../RouterList';
 import {connect} from "react-redux";
+import Cookies from 'js-cookie';
 
 
 const mapStateToProps = state => (state);
@@ -25,6 +26,8 @@ class MainMenu extends Component {
         // const activeItem = 'friends';
         const userExit = () => {
             this.props.removeToken('remove token');
+            Cookies.set('user_token','',{expires: -1});
+            this.props.history.push('/');
         };
 
         const btnRight = () => {
@@ -32,7 +35,7 @@ class MainMenu extends Component {
                 return [
                     {
                         jsx: (
-                            <Link to={ RouterList.register.path } key={1}>
+                            <Link to={ RouterList.profile.path } key={1}>
                                 <Menu.Item
                                     link
                                     position='right'
@@ -101,6 +104,18 @@ class MainMenu extends Component {
                             )
                         }
                     ];
+                case 'business':
+                    return [
+                        {
+                            jsx: (
+                                <Link to={ RouterList.places.path } key={1}>
+                                    <Menu.Item
+                                        link
+                                    >Места</Menu.Item>
+                                </Link>
+                            )
+                        }
+                    ];
                 default:
                     return [];
             }
@@ -134,4 +149,4 @@ class MainMenu extends Component {
     }
 }
 
-export default  connect(mapStateToProps, mapDispatchToProps)(MainMenu);
+export default  withRouter(connect(mapStateToProps, mapDispatchToProps)(MainMenu));

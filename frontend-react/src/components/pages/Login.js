@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { withRouter } from "react-router-dom";
+
 import {
     Segment,
     Grid,
@@ -43,6 +45,8 @@ class Login extends Component{
             .then((response) => {
                 Cookies.set('user_token', response.data.token, { expires: 7 });
                 this.props.setToken(response.data.token);
+                this.props.history.push('/profile');
+
             })
             .catch((error) => {
                 console.log('error: ', error);
@@ -65,12 +69,16 @@ class Login extends Component{
     };
 
     render() {
+        if (this.props.userReducer.userToken) {
+            this.props.history.push('/');
+        }
+
         return (
             <div>
                 <Grid centered columns={2}>
                     <Grid.Column>
                         <Segment color='green'>
-                            <Header>Авторизация { this.props.state }</Header>
+                            <Header>Авторизация</Header>
                             <Form>
                                 <Form.Field>
                                     <label>Логин</label>
@@ -90,4 +98,4 @@ class Login extends Component{
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

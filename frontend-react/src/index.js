@@ -41,6 +41,7 @@ function getUserData(token) {
             console.log('connect error');
             store.dispatch({type:'SET_USER_DATA', payload: {}});
             store.dispatch({type:'SET_USER_TOKEN', payload: null});
+
         })
 }
 

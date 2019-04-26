@@ -16,7 +16,6 @@ var apiMapsRoute = require('./routes/api/maps');
 var app = express();
 
 
-
 app.use(session({
     secret: 'keyboard cat',
     resave: false,
