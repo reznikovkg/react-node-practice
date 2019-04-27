@@ -7,6 +7,9 @@ const ApiList = {
     'auth_connect': {
         path: `${domain}/api/auth/connect`,
     },
+    'auth_register': {
+        path: `${domain}/api/auth/register`,
+    },
     // 'login': {
     //     path: '/login',
     //     component: Login

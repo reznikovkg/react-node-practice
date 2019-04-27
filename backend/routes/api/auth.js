@@ -62,6 +62,24 @@ app.get('/register', function (req, res, next) {
     const email = req.param('email');
     const password = req.param('password');
 
+    const business = req.param('business');
+
+    let type;
+    if (business) {
+        type = 'business';
+    } else {
+        type = 'default';
+    }
+
+    const name = req.param('name');
+    const phone = req.param('phone');
+    const birthday = req.param('birthday');
+    const gender = req.param('gender');
+    const address = req.param('address');
+    const about = req.param('about');
+
+
+
     if (!((username.length > 0) &&
         (/^[a-zA-Z0-9]+$/.test(username)) &&
         (password.length > 0) &&
@@ -73,28 +91,36 @@ app.get('/register', function (req, res, next) {
     }
 
     var token = '';
-    var words = '-0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
-    var max_position = words.length - 1;
+    const words = '-0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM';
+    const max_position = words.length - 1;
     for (i = 0; i < 120; ++i) {
         position = Math.floor(Math.random() * max_position);
         token = token + words.substring(position, position + 1);
     }
+
     const user = models.Users.build({
-        username: username,
-        email: email,
-        password: password,
-        token: token
+        username,
+        email,
+        password,
+        token,
+        type,
+        name,
+        phone,
+        birthday,
+        gender,
+        address,
+        about
     });
 
     user.save().then(() => {
 
 
 
-        temlateMail('/../templates/mail/register.html', {
-            username: username,
-            email: email,
-            url: `${domainServer}/api/auth/activate?token=${token}`
-        });
+        // temlateMail('/../templates/mail/register.html', {
+        //     username: username,
+        //     email: email,
+        //     url: `${domainServer}/api/auth/activate?token=${token}`
+        // });
 
         // const mailOptions = {
         //     from: 'sender@email.com', // sender address

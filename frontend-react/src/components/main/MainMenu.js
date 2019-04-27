@@ -108,7 +108,7 @@ class MainMenu extends Component {
                     return [
                         {
                             jsx: (
-                                <Link to={ RouterList.places.path } key={1}>
+                                <Link to={ RouterList.businessPlaces.path } key={1}>
                                     <Menu.Item
                                         link
                                     >Места</Menu.Item>
