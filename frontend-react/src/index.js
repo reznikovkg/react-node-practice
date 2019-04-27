@@ -29,7 +29,7 @@ function getUserData(token) {
         return;
     }
 
-    axios.get(`${ApiList.auth_connect.path}`, {
+    axios.get(`${ApiList.auth_connect}`, {
         params: {
             token: token
         }

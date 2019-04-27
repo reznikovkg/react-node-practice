@@ -1,19 +1,13 @@
 const domain = 'http://localhost:8888';
 
 const ApiList = {
-    'auth_login': {
-        path: `${domain}/api/auth/login`,
-    },
-    'auth_connect': {
-        path: `${domain}/api/auth/connect`,
-    },
-    'auth_register': {
-        path: `${domain}/api/auth/register`,
-    },
-    // 'login': {
-    //     path: '/login',
-    //     component: Login
-    // },
+    'auth_login': `${domain}/api/auth/login`,
+    'auth_connect': `${domain}/api/auth/connect`,
+    'auth_register': `${domain}/api/auth/register`,
+
+    'business_allPlaces': `${domain}/api/business/allPlaces`,
+    'business_sendPlaces': `${domain}/api/business/sendPlaces`,
+
     // 'register': {
     //     path: '/register',
     //     component: ''

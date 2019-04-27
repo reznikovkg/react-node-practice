@@ -8,12 +8,11 @@ import {
     Button,
     Checkbox,
     TextArea,
-    Select,
-    Container
+    Select
 } from 'semantic-ui-react';
 
 import axios from 'axios';
-import Cookies from 'js-cookie';
+
 import ApiList from './../../ApiList';
 
 import  { connect } from 'react-redux';
@@ -56,7 +55,7 @@ class Register extends Component{
     }
 
     toRegister = () => {
-        axios.get(`${ApiList.auth_register.path}`, {
+        axios.get(`${ApiList.auth_register}`, {
             params: {
                 username: this.state.formUsername,
                 password: this.state.formPassword,

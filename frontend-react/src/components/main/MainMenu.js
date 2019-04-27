@@ -39,8 +39,6 @@ class MainMenu extends Component {
                                 <Menu.Item
                                     link
                                     position='right'
-                                    color={'blue'}
-                                    active={ true }
                                 >{ this.props.userReducer.userData.username }</Menu.Item>
                             </Link>
                         )
@@ -112,6 +110,18 @@ class MainMenu extends Component {
                                     <Menu.Item
                                         link
                                     >Места</Menu.Item>
+                                </Link>
+                            )
+                        }
+                    ];
+                case 'default':
+                    return [
+                        {
+                            jsx: (
+                                <Link to={ RouterList.homepage.path } key={1}>
+                                    <Menu.Item
+                                        link
+                                    >хело</Menu.Item>
                                 </Link>
                             )
                         }

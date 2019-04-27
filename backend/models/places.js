@@ -1,15 +1,15 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
     const Place = sequelize.define('Places', {
-        user: DataTypes.NUMBER,
+        user: DataTypes.INTEGER,
 
         name: DataTypes.STRING,
         description: DataTypes.STRING,
         address: DataTypes.STRING,
-        contact_email: DataTypes.STRING,
-        contact_phone: DataTypes.STRING,
-        working_time_start: DataTypes.STRING,
-        working_time_finish: DataTypes.STRING,
+        contactEmail: DataTypes.STRING,
+        contactPhone: DataTypes.STRING,
+        workingTimeStart: DataTypes.STRING,
+        workingTimeFinish: DataTypes.STRING,
 
         picture: DataTypes.STRING
     }, {

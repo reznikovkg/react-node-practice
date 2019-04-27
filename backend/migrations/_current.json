@@ -1,0 +1,144 @@
+{
+    "tables": {
+        "Places": {
+            "tableName": "Places",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "user": {
+                    "field": "user",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "name": {
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "description": {
+                    "field": "description",
+                    "seqType": "Sequelize.STRING"
+                },
+                "address": {
+                    "field": "address",
+                    "seqType": "Sequelize.STRING"
+                },
+                "contactEmail": {
+                    "field": "contactEmail",
+                    "seqType": "Sequelize.STRING"
+                },
+                "contactPhone": {
+                    "field": "contactPhone",
+                    "seqType": "Sequelize.STRING"
+                },
+                "workingTimeStart": {
+                    "field": "workingTimeStart",
+                    "seqType": "Sequelize.STRING"
+                },
+                "workingTimeFinish": {
+                    "field": "workingTimeFinish",
+                    "seqType": "Sequelize.STRING"
+                },
+                "picture": {
+                    "field": "picture",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "charset": "utf8",
+            "indexes": []
+        },
+        "Users": {
+            "tableName": "Users",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "username": {
+                    "unique": true,
+                    "field": "username",
+                    "seqType": "Sequelize.STRING"
+                },
+                "email": {
+                    "unique": true,
+                    "field": "email",
+                    "seqType": "Sequelize.STRING"
+                },
+                "password": {
+                    "field": "password",
+                    "seqType": "Sequelize.STRING"
+                },
+                "token": {
+                    "unique": true,
+                    "field": "token",
+                    "seqType": "Sequelize.STRING"
+                },
+                "isActivate": {
+                    "field": "isActivate",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "type": {
+                    "field": "type",
+                    "seqType": "Sequelize.STRING"
+                },
+                "name": {
+                    "field": "name",
+                    "seqType": "Sequelize.STRING"
+                },
+                "birthday": {
+                    "field": "birthday",
+                    "seqType": "Sequelize.DATEONLY"
+                },
+                "gender": {
+                    "field": "gender",
+                    "seqType": "Sequelize.STRING"
+                },
+                "phone": {
+                    "field": "phone",
+                    "seqType": "Sequelize.STRING"
+                },
+                "about": {
+                    "field": "about",
+                    "seqType": "Sequelize.STRING"
+                },
+                "address": {
+                    "field": "address",
+                    "seqType": "Sequelize.STRING"
+                },
+                "photo": {
+                    "field": "photo",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "charset": "utf8",
+            "indexes": []
+        }
+    },
+    "revision": 1
+}

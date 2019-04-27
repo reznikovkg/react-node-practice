@@ -36,7 +36,7 @@ class Login extends Component{
     }
 
     toLogin = () => {
-        axios.get(`${ApiList.auth_login.path}`, {
+        axios.get(`${ApiList.auth_login}`, {
             params: {
                 username: this.state.form.username,
                 password: this.state.form.password
