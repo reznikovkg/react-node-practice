@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
         collate: 'utf8_unicode_ci'
     });
     User.associate = function (models) {
-        // associations can be defined here
+
     };
     return User;
 };

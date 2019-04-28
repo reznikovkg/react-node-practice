@@ -10,10 +10,6 @@
                     "field": "id",
                     "seqType": "Sequelize.INTEGER"
                 },
-                "user": {
-                    "field": "user",
-                    "seqType": "Sequelize.INTEGER"
-                },
                 "name": {
                     "field": "name",
                     "seqType": "Sequelize.STRING"
@@ -55,6 +51,71 @@
                     "allowNull": false,
                     "field": "updatedAt",
                     "seqType": "Sequelize.DATE"
+                },
+                "userId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "Users",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "userId",
+                    "seqType": "Sequelize.INTEGER"
+                }
+            },
+            "charset": "utf8",
+            "indexes": []
+        },
+        "Reviews": {
+            "tableName": "Reviews",
+            "schema": {
+                "id": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "autoIncrement": true,
+                    "field": "id",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "rating": {
+                    "field": "rating",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "comment": {
+                    "field": "comment",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "userId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "Users",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "userId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "placeId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "Places",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "placeId",
+                    "seqType": "Sequelize.INTEGER"
                 }
             },
             "charset": "utf8",

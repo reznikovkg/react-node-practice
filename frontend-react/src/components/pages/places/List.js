@@ -3,25 +3,31 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import ApiList from './../../../ApiList';
 
+import { Link } from 'react-router-dom';
+
 import  { connect } from 'react-redux';
 
 import {
     Table,
     Button,
     Icon,
-    Modal, Form, Checkbox, TextArea
+    Modal,
+    Form,
+    Checkbox,
+    TextArea
 } from 'semantic-ui-react';
 
 import {
     DateInput,
     TimeInput
 } from 'semantic-ui-calendar-react';
+import RouterList from "../../../RouterList";
 
 const mapStateToProps = state => ({
     ...state
 });
 
-class List extends Component{
+class List extends Component {
     constructor(props) {
         super(props);
 
@@ -188,7 +194,9 @@ class List extends Component{
                                         <Table.Cell>{ place.name }</Table.Cell>
                                         <Table.Cell>{ place.email }</Table.Cell>
                                         <Table.Cell>
-                                            <Button compact>Просмотр</Button>
+                                            <Link to={RouterList.place.pathWithParams(place.id)} >
+                                                <Button compact>Просмотр</Button>
+                                            </Link>
                                             <Button compact>Статистика</Button>
                                             <Button compact>Удалить</Button>
                                         </Table.Cell>

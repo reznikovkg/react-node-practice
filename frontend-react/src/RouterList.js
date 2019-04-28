@@ -6,6 +6,7 @@ import Register from './components/pages/Register';
 import Profile from './components/pages/Profile';
 
 import PlacesList from './components/pages/places/List';
+import Place from "./components/pages/places/Place";
 
 const RouterList = {
     'homepage': {
@@ -24,6 +25,15 @@ const RouterList = {
     'profile': {
         path: '/profile',
         component: Profile,
+        access: 'all'
+    },
+
+    'place': {
+        path: '/place/:id',
+        pathWithParams: (id) => {
+            return `/place/${id}`
+        },
+        component: Place,
         access: 'all'
     },
 

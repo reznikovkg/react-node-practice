@@ -33,7 +33,7 @@ app.get('/allPlaces', function (req, res, next) {
 
     models.Places.findAll({
         where: {
-            user: userId
+            userId: userId
         }
     })
         .then(places => {
@@ -45,7 +45,7 @@ app.get('/allPlaces', function (req, res, next) {
 });
 
 app.get('/sendPlaces', function (req, res, next) {
-    const user = req.param('userId');
+    const userId = req.param('userId');
 
     const name = req.param('name');
     const description = req.param('description');
@@ -56,7 +56,7 @@ app.get('/sendPlaces', function (req, res, next) {
     const workingTimeFinish = req.param('workingTimeFinish');
 
     const place = models.Places.build({
-        user,
+        userId,
         name,
         description,
         address,

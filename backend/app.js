@@ -11,8 +11,8 @@ const indexRouter = require('./routes/index');
 const apiAuthRoute = require('./routes/api/auth');
 const apiAdminRoute = require('./routes/api/admin');
 const apiUserRoute = require('./routes/api/user');
-const apiMapsRoute = require('./routes/api/maps');
 const apiBusinessRoute = require('./routes/api/business');
+const apiPlacesRoute = require('./routes/api/places');
 
 let app = express();
 
@@ -39,8 +39,8 @@ app.use('/', indexRouter);
 app.use('/api/auth', apiAuthRoute);
 app.use('/api/admin', apiAdminRoute);
 app.use('/api/user', apiUserRoute);
-app.use('/api/maps', apiMapsRoute);
 app.use('/api/business', apiBusinessRoute);
+app.use('/api/places', apiPlacesRoute);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

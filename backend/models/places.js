@@ -1,8 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
     const Place = sequelize.define('Places', {
-        user: DataTypes.INTEGER,
-
         name: DataTypes.STRING,
         description: DataTypes.STRING,
         address: DataTypes.STRING,
@@ -17,7 +15,14 @@ module.exports = (sequelize, DataTypes) => {
         collate: 'utf8_unicode_ci'
     });
     Place.associate = function (models) {
-        // associations can be defined here
+        Place.belongsTo(models.Users, {
+            foreignKey: 'userId',
+            as: 'user'
+        });
+        Place.hasMany(models.Reviews, {
+            foreignKey: 'placeId',
+            as: 'reviews'
+        });
     };
     return Place;
 };

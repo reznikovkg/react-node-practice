@@ -5,83 +5,20 @@ var Sequelize = require('sequelize');
 /**
  * Actions summary:
  *
- * createTable "Places", deps: []
  * createTable "Users", deps: []
+ * createTable "Places", deps: [Users]
+ * createTable "Reviews", deps: [Users, Places]
  *
  **/
 
 var info = {
     "revision": 1,
     "name": "noname",
-    "created": "2019-04-27T17:45:06.566Z",
+    "created": "2019-04-28T11:02:43.297Z",
     "comment": ""
 };
 
 var migrationCommands = [{
-        fn: "createTable",
-        params: [
-            "Places",
-            {
-                "id": {
-                    "type": Sequelize.INTEGER,
-                    "field": "id",
-                    "autoIncrement": true,
-                    "primaryKey": true,
-                    "allowNull": false
-                },
-                "user": {
-                    "type": Sequelize.INTEGER,
-                    "field": "user"
-                },
-                "name": {
-                    "type": Sequelize.STRING,
-                    "field": "name"
-                },
-                "description": {
-                    "type": Sequelize.STRING,
-                    "field": "description"
-                },
-                "address": {
-                    "type": Sequelize.STRING,
-                    "field": "address"
-                },
-                "contactEmail": {
-                    "type": Sequelize.STRING,
-                    "field": "contactEmail"
-                },
-                "contactPhone": {
-                    "type": Sequelize.STRING,
-                    "field": "contactPhone"
-                },
-                "workingTimeStart": {
-                    "type": Sequelize.STRING,
-                    "field": "workingTimeStart"
-                },
-                "workingTimeFinish": {
-                    "type": Sequelize.STRING,
-                    "field": "workingTimeFinish"
-                },
-                "picture": {
-                    "type": Sequelize.STRING,
-                    "field": "picture"
-                },
-                "createdAt": {
-                    "type": Sequelize.DATE,
-                    "field": "createdAt",
-                    "allowNull": false
-                },
-                "updatedAt": {
-                    "type": Sequelize.DATE,
-                    "field": "updatedAt",
-                    "allowNull": false
-                }
-            },
-            {
-                "charset": "utf8"
-            }
-        ]
-    },
-    {
         fn: "createTable",
         params: [
             "Users",
@@ -157,6 +94,135 @@ var migrationCommands = [{
                     "type": Sequelize.DATE,
                     "field": "updatedAt",
                     "allowNull": false
+                }
+            },
+            {
+                "charset": "utf8"
+            }
+        ]
+    },
+    {
+        fn: "createTable",
+        params: [
+            "Places",
+            {
+                "id": {
+                    "type": Sequelize.INTEGER,
+                    "field": "id",
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "allowNull": false
+                },
+                "name": {
+                    "type": Sequelize.STRING,
+                    "field": "name"
+                },
+                "description": {
+                    "type": Sequelize.STRING,
+                    "field": "description"
+                },
+                "address": {
+                    "type": Sequelize.STRING,
+                    "field": "address"
+                },
+                "contactEmail": {
+                    "type": Sequelize.STRING,
+                    "field": "contactEmail"
+                },
+                "contactPhone": {
+                    "type": Sequelize.STRING,
+                    "field": "contactPhone"
+                },
+                "workingTimeStart": {
+                    "type": Sequelize.STRING,
+                    "field": "workingTimeStart"
+                },
+                "workingTimeFinish": {
+                    "type": Sequelize.STRING,
+                    "field": "workingTimeFinish"
+                },
+                "picture": {
+                    "type": Sequelize.STRING,
+                    "field": "picture"
+                },
+                "createdAt": {
+                    "type": Sequelize.DATE,
+                    "field": "createdAt",
+                    "allowNull": false
+                },
+                "updatedAt": {
+                    "type": Sequelize.DATE,
+                    "field": "updatedAt",
+                    "allowNull": false
+                },
+                "userId": {
+                    "type": Sequelize.INTEGER,
+                    "field": "userId",
+                    "onUpdate": "CASCADE",
+                    "onDelete": "SET NULL",
+                    "references": {
+                        "model": "Users",
+                        "key": "id"
+                    },
+                    "allowNull": true
+                }
+            },
+            {
+                "charset": "utf8"
+            }
+        ]
+    },
+    {
+        fn: "createTable",
+        params: [
+            "Reviews",
+            {
+                "id": {
+                    "type": Sequelize.INTEGER,
+                    "field": "id",
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "allowNull": false
+                },
+                "rating": {
+                    "type": Sequelize.INTEGER,
+                    "field": "rating"
+                },
+                "comment": {
+                    "type": Sequelize.STRING,
+                    "field": "comment"
+                },
+                "createdAt": {
+                    "type": Sequelize.DATE,
+                    "field": "createdAt",
+                    "allowNull": false
+                },
+                "updatedAt": {
+                    "type": Sequelize.DATE,
+                    "field": "updatedAt",
+                    "allowNull": false
+                },
+                "userId": {
+                    "type": Sequelize.INTEGER,
+                    "field": "userId",
+                    "onUpdate": "CASCADE",
+                    "onDelete": "SET NULL",
+                    "references": {
+                        "model": "Users",
+                        "key": "id"
+                    },
+                    "allowNull": true
+                },
+                "placeId": {
+                    "type": Sequelize.INTEGER,
+                    "field": "placeId",
+                    "onUpdate": "CASCADE",
+                    "onDelete": "SET NULL",
+                    "references": {
+                        "model": "Places",
+                        "key": "id"
+                    },
+                    "allowNull": true
                 }
             },
             {
