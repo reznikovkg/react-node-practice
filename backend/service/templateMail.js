@@ -1,9 +1,9 @@
-var transporter = require('../service/mailer');
+const transporter = require('../service/mailer');
 
-var handlebars = require('handlebars');
-var fs = require('fs');
+const handlebars = require('handlebars');
+const fs = require('fs');
 
-var readHTMLFile = function(templatePath, params) {
+const readHTMLFile = function(templatePath, params) {
     fs.readFile(__dirname + templatePath, {encoding: 'utf-8'}, function (err, html) {
         if (err) {
             console.log(err);

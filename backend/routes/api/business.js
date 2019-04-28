@@ -1,8 +1,7 @@
-var express = require('express');
-var session = require('express-session');
-var app = express();
+const express = require('express');
+const app = express();
 
-var models = require('../../models');
+const models = require('../../models');
 
 const status = require('../../config/const')['status'];
 
@@ -28,23 +27,8 @@ app.use(function (req, res, next) {
         });
 });
 
-app.get('/allPlaces', function (req, res, next) {
-    const userId = req.param('userId');
 
-    models.Places.findAll({
-        where: {
-            userId: userId
-        }
-    })
-        .then(places => {
-            res.status(status.OK.CODE).send({'places': places});
-        })
-        .catch(() => {
-            res.status(status.NOT_FOUND.CODE).send({'message': 'Не найдено'});
-        });
-});
-
-app.get('/sendPlaces', function (req, res, next) {
+app.get('/createPlaces', function (req, res, next) {
     const userId = req.param('userId');
 
     const name = req.param('name');
@@ -74,6 +58,22 @@ app.get('/sendPlaces', function (req, res, next) {
     });
 });
 
+
+app.get('/removePlaces', function (req, res, next) {
+    const userId = req.param('userId');
+    const id = req.param('id');
+
+
+    models.Places.destroy({
+        where: {
+            userId: userId,
+            id: id
+        }
+    }).then(() => {
+        res.status(status.OK.CODE).send({message: status.OK.MESSAGE});
+    });
+
+});
 
 
 module.exports = app;

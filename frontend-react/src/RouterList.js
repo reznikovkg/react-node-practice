@@ -1,11 +1,12 @@
 import Homepage from './components/pages/Homepage';
 
-import Login from './components/pages/Login';
-import Register from './components/pages/Register';
+import Login from './components/pages/auth/Login';
+import Activate from './components/pages/auth/Activate';
+import Register from './components/pages/auth/Register';
 
 import Profile from './components/pages/Profile';
 
-import PlacesList from './components/pages/places/List';
+import Places from './components/pages/places/Places';
 import Place from "./components/pages/places/Place";
 
 const RouterList = {
@@ -16,6 +17,10 @@ const RouterList = {
     'login': {
         path: '/login',
         component: Login
+    },
+    'active': {
+        path: '/active',
+        component: Activate
     },
     'register': {
         path: '/register',
@@ -37,10 +42,10 @@ const RouterList = {
         access: 'all'
     },
 
-    'businessPlaces': {
-        path: '/business/places',
-        component: PlacesList,
-        access: 'business'
+    'places': {
+        path: '/places',
+        component: Places,
+        access: 'all'
     }
 };
 

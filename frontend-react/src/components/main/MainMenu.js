@@ -39,6 +39,7 @@ class MainMenu extends Component {
                                 <Menu.Item
                                     link
                                     position='right'
+                                    style={{textTransform: 'uppercase'}}
                                 >{ this.props.userReducer.userData.username }</Menu.Item>
                             </Link>
                         )
@@ -94,10 +95,10 @@ class MainMenu extends Component {
                     return [
                         {
                             jsx: (
-                                <Link to={ RouterList.homepage.path } key={1}>
+                                <Link to={ RouterList.places.path } key={1}>
                                     <Menu.Item
                                         link
-                                    >хело</Menu.Item>
+                                    >Список мест</Menu.Item>
                                 </Link>
                             )
                         }
@@ -106,10 +107,10 @@ class MainMenu extends Component {
                     return [
                         {
                             jsx: (
-                                <Link to={ RouterList.businessPlaces.path } key={1}>
+                                <Link to={ RouterList.places.path } key={1}>
                                     <Menu.Item
                                         link
-                                    >Места</Menu.Item>
+                                    >Мой список мест</Menu.Item>
                                 </Link>
                             )
                         }
@@ -118,10 +119,19 @@ class MainMenu extends Component {
                     return [
                         {
                             jsx: (
-                                <Link to={ RouterList.homepage.path } key={1}>
+                                <Link to={ RouterList.places.path } key={1}>
                                     <Menu.Item
                                         link
-                                    >хело</Menu.Item>
+                                    >Список мест</Menu.Item>
+                                </Link>
+                            )
+                        },
+                        {
+                            jsx: (
+                                <Link to={ RouterList.places.path } key={1}>
+                                    <Menu.Item
+                                        link
+                                    >Список пользователей</Menu.Item>
                                 </Link>
                             )
                         }

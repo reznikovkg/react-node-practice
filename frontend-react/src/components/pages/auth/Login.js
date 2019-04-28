@@ -12,7 +12,7 @@ import {
 
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import ApiList from './../../ApiList';
+import ApiList from '../../../ApiList';
 
 import  { connect } from 'react-redux';
 

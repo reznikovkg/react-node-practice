@@ -5,14 +5,11 @@ import ApiList from './../../../ApiList';
 
 import  { connect } from 'react-redux';
 
-import {
-    Table,
-    Button,
-    Icon,
-    Modal, Form, Checkbox, TextArea
-} from 'semantic-ui-react';
-import Reviews from "../../other/Reviews";
+import Reviews from "./include/Reviews";
 
+import {
+    Segment
+} from "semantic-ui-react";
 
 const mapStateToProps = state => ({
     ...state
@@ -33,7 +30,8 @@ class Place extends Component{
     getPlace = () => {
         axios.get(`${ApiList.places_getPlace}`, {
             params: {
-                id: this.state.id
+                id: this.state.id,
+                token: this.props.userReducer.userToken
             }
         }).then((response) => {
             this.setState({place: response.data.place })
@@ -51,16 +49,26 @@ class Place extends Component{
         }
     };
 
+    viewReviews = () => {
+        if (this.state.place) {
+            return (
+                <Reviews placeId={this.props.match.params.id} reviews={ this.state.place.reviews }/>
+            );
+        }
+    };
+
     render() {
         return (
             <div>
                 <h3>Просмотр места</h3>
+                <Segment>
                 {
                     this.viewPlace()
                 }
-                {/*{*/}
-                {/*    <Reviews reviews={ this.state.place }></Reviews>*/}
-                {/*}*/}
+                </Segment>
+                {
+                    this.viewReviews()
+                }
             </div>
         );
     }

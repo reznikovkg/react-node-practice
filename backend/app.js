@@ -6,16 +6,20 @@ const logger = require('morgan');
 const session = require('express-session');
 const cors = require('cors');
 
-
+//require ROUTES
 const indexRouter = require('./routes/index');
-const apiAuthRoute = require('./routes/api/auth');
+
+const apiAuthRoute = require('./routes/api/auth')
+
 const apiAdminRoute = require('./routes/api/admin');
-const apiUserRoute = require('./routes/api/user');
 const apiBusinessRoute = require('./routes/api/business');
+const apiDefaultRoute = require('./routes/api/default');
+
 const apiPlacesRoute = require('./routes/api/places');
+const apiReviewsRoute = require('./routes/api/reviews');
+
 
 let app = express();
-
 
 app.use(session({
     secret: 'keyboard cat',
@@ -35,12 +39,15 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//user ROUTES
 app.use('/', indexRouter);
 app.use('/api/auth', apiAuthRoute);
 app.use('/api/admin', apiAdminRoute);
-app.use('/api/user', apiUserRoute);
 app.use('/api/business', apiBusinessRoute);
+app.use('/api/default', apiDefaultRoute);
 app.use('/api/places', apiPlacesRoute);
+app.use('/api/reviews', apiReviewsRoute);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -35,7 +35,6 @@ function getUserData(token) {
         }
     })
         .then((response) => {
-            console.log('connect ok');
             store.dispatch({type:'SET_USER_DATA', payload: response.data});
         })
         .catch((error) => {
@@ -53,7 +52,6 @@ function getUserData(token) {
 function checkChangeUserToken() {
     const nowState = store.getState();
 
-    console.log(startState.userReducer.userToken, nowState.userReducer.userToken);
     if (startState.userReducer.userToken !== nowState.userReducer.userToken) {
         startState = store.getState();
         getUserData(nowState.userReducer.userToken)

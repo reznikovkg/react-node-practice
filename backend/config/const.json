@@ -25,6 +25,11 @@
       "MESSAGE": "Ошибка сервера"
     }
   },
-  "domainClient": "http://localhost:8080",
-  "domainServer": "http://localhost:8888"
+  "domainClient": "http://localhost:3000",
+  "domainServer": "http://localhost:8888",
+  "userTypes": {
+    "DEFAULT": "default",
+    "BUSINESS": "business",
+    "ADMIN": "admin"
+  }
 }

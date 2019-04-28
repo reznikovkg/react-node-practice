@@ -1,9 +1,8 @@
-var express = require('express');
-var session = require('express-session');
-var app = express();
-var temlateMail = require('../../service/templateMail');
+const express = require('express');
+const app = express();
+const temlateMail = require('../../service/templateMail');
 
-var models = require('../../models');
+const models = require('../../models');
 
 const status = require('../../config/const')['status'];
 const domainClient = require('../../config/const')['domainClient'];
@@ -114,27 +113,11 @@ app.get('/register', function (req, res, next) {
 
     user.save().then(() => {
 
-
-
-        // temlateMail('/../templates/mail/register.html', {
-        //     username: username,
-        //     email: email,
-        //     url: `${domainServer}/api/auth/activate?token=${token}`
-        // });
-
-        // const mailOptions = {
-        //     from: 'sender@email.com', // sender address
-        //     to: email, // list of receivers
-        //     subject: 'Подтвердите регистрацию', // Subject line
-        //     html: '<p>Your html here</p>'// plain text body
-        // };
-        //
-        // transporter.sendMail(mailOptions, function (err, info) {
-        //     if(err)
-        //         console.log(err)
-        //     else
-        //         console.log(info);
-        // });
+        temlateMail('/../templates/mail/register.html', {
+            username: username,
+            email: email,
+            url: `${domainServer}/api/auth/activate?token=${token}`
+        });
 
         res.status(status.OK.CODE).send({message: status.OK.MESSAGE});
     });
@@ -166,25 +149,6 @@ app.get('/connect', function (req, res, next) {
                 'photo': user.address
 
             });
-        });
-});
-
-app.get('/uniqueUsername', function (req, res, next) {
-    const username = req.param('username');
-
-    models.Users.findOne({
-        where: {
-            username: username
-        }
-    })
-        .then(user => {
-            if (user) {
-                res.status(status.FOUND.CODE).send({error: 'Имя занято'});
-            } else {
-                res.status(status.OK.CODE).send({message: status.OK.MESSAGE});
-            }
-        }).catch(() => {
-            res.status(status.OK.CODE).send({message: status.OK.MESSAGE});
         });
 });
 
