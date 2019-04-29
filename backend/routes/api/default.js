@@ -41,20 +41,21 @@ app.get('/saveReview', function (req, res, next) {
         }
     })
         .then(review => {
-            review.update({
-                comment: comment,
-                rating: rating
-            }).then((review) => {
-                res.status(status.OK.CODE).send({'message': 'Обновлено'});
-            });
+            review.comment = comment;
+            review.rating = rating;
 
-            res.status(status.OK.CODE).send({'place': place});
+            review.save().then(() => {
+                res.status(status.OK.CODE).send({'message': 'Обновлено'});
+            }).catch(() => {
+                res.status(status.INTERVAL_SERVER_ERROR.CODE)
+                    .send({message: status.INTERVAL_SERVER_ERROR.MESSAGE});
+            });
         })
         .catch(() => {
 
             const review = models.Reviews.build({
-                userId: userId,
-                placeId: placeId,
+                userId,
+                placeId,
                 comment,
                 rating
             });

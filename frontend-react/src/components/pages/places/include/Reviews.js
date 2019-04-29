@@ -24,9 +24,10 @@ class Reviews extends Component {
 
         this.updateReviews = this.props.updateReviews;
 
-        this.state = {
-            userReview: null,
+        this.review = null;
+        this.edit = false;
 
+        this.state = {
             formComment: '',
             formRating: 0
         };
@@ -34,14 +35,11 @@ class Reviews extends Component {
     }
 
     viewOneReview = (review) => {
-        if (!this.state.userReview && review.user.id === this.props.userReducer.userData.id) {
-            this.setState({userReview: review});
+        if (!this.review && review.user.id === this.props.userReducer.userData.id && !this.edit) {
+            this.review = review;
         }
 
         if (review.user.id === this.props.userReducer.userData.id) {
-            if (!this.state.userReview) {
-                this.setState({userReview: review});
-            }
 
             return (
                 <Comment key={review.id}>
@@ -58,7 +56,7 @@ class Reviews extends Component {
                         </Comment.Text>
                         <Comment.Actions>
                             <Comment.Action>
-                                <Button content='Редактировать' labelPosition='left' icon='edit' color={'blue'} compact/>
+                                <Button content='Редактировать' labelPosition='left' icon='edit' color={'blue'} compact onClick={this.editReview}/>
                                 <Button content='Удалить' labelPosition='left' icon='close' color={'red'} compact onClick={this.removeReview}/>
                             </Comment.Action>
                         </Comment.Actions>
@@ -105,10 +103,8 @@ class Reviews extends Component {
                 rating: this.state.formRating
             }
         }).then((response) => {
-            this.setState(
-                { userReview: null, formComment: null, formRating: 0 },
-                ()=>{this.updateReviews(); console.log(this.state.userReview) }
-                );
+            this.updateReviews();
+            this.edit = false;
         });
     };
 
@@ -121,15 +117,25 @@ class Reviews extends Component {
                 placeId: this.props.placeId,
             }
         }).then((response) => {
-            this.setState(
-                { userReview: 1 },
-                ()=>{this.updateReviews(); console.log(this.state.userReview) }
-                );
+            this.review = null;
+            this.updateReviews();
+        });
+    };
+
+    editReview = () => {
+        this.edit = true;
+        const comment = this.review.comment;
+        const rating = this.review.rating;
+        this.review = null;
+
+        this.setState({
+            formComment: comment,
+            formRating: rating
         });
     };
 
     viewFormReview = () => {
-        if (this.state.userReview) {
+        if (this.review) {
             return;
         }
 
@@ -144,10 +150,10 @@ class Reviews extends Component {
                     <Comment.Content>
                         <Comment.Author>{ this.props.userReducer.userData.username }</Comment.Author>
                         <Comment.Metadata>
-                            <div><Rating maxRating={5} defaultRating={0} icon='star' onRate={ this.handleChangeFormRating }/></div>
+                            <div><Rating maxRating={5} icon='star' defaultRating={this.state.formRating} onRate={ this.handleChangeFormRating }/></div>
                         </Comment.Metadata>
                         <Comment.Text>
-                            <Form.TextArea rows={2} placeholder='Ваш отзыв' value={this.state.formContactEmail}
+                            <Form.TextArea rows={2} placeholder='Ваш отзыв' value={this.state.formComment}
                                            onChange={ this.handleChangeFormComment }/>
                         </Comment.Text>
                         <Comment.Actions>
