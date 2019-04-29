@@ -35,23 +35,20 @@ class Reviews extends Component {
     }
 
     viewOneReview = (review) => {
-        if (!this.review && review.user.id === this.props.userReducer.userData.id && !this.edit) {
-            this.review = review;
-        }
-
         if (review.user.id === this.props.userReducer.userData.id) {
+            this.review = review;
 
             return (
-                <Comment key={review.id}>
+                <Comment key={ this.review.id }>
                     <Comment.Avatar as='a' src='/images/avatar/small/joe.jpg' />
                     <Comment.Content>
-                        <Comment.Author>{ review.user.username } (Это вы)</Comment.Author>
+                        <Comment.Author>{ this.review.user.username } (Это вы)</Comment.Author>
                         <Comment.Metadata>
-                            <div><Rating maxRating={5} defaultRating={review.rating} icon='star' disabled/></div>
+                            <div><Rating maxRating={5} rating={ this.review.rating } icon='star' disabled/></div>
                         </Comment.Metadata>
                         <Comment.Text>
                             <p>
-                                { review.comment }
+                                { this.review.comment }
                             </p>
                         </Comment.Text>
                         <Comment.Actions>
@@ -71,13 +68,26 @@ class Reviews extends Component {
                 <Comment.Content>
                     <Comment.Author>{ review.user.username }</Comment.Author>
                     <Comment.Metadata>
-                        <div><Rating maxRating={5} defaultRating={review.rating} icon='star' disabled/></div>
+                        <div><Rating maxRating={5} rating={review.rating} icon='star' disabled/></div>
                     </Comment.Metadata>
                     <Comment.Text>
                         <p>
                             { review.comment }
                         </p>
                     </Comment.Text>
+                    {
+                        (()=>{
+                            if (this.props.userReducer.userData.type === 'admin') {
+                                return (
+                                    <Comment.Actions>
+                                        <Comment.Action>
+                                            <Button content='Удалить' labelPosition='left' icon='close' color={'red'} compact onClick={ this.removeReviewAdmin(review.id) }/>
+                                        </Comment.Action>
+                                    </Comment.Actions>
+                                );
+                            }
+                        })()
+                    }
                 </Comment.Content>
             </Comment>
         );
@@ -103,8 +113,12 @@ class Reviews extends Component {
                 rating: this.state.formRating
             }
         }).then((response) => {
-            this.updateReviews();
             this.edit = false;
+            this.setState({
+                formComment: '',
+                formRating: 0
+            });
+            this.updateReviews();
         });
     };
 
@@ -117,7 +131,22 @@ class Reviews extends Component {
                 placeId: this.props.placeId,
             }
         }).then((response) => {
-            this.review = null;
+            console.log(this.review);
+            delete this.review;
+            console.log(this.review);
+            this.updateReviews();
+        });
+    };
+
+    removeReviewAdmin = id => () => {
+        axios.get(`${ApiList.admin_removeReview}`, {
+            params: {
+                token: this.props.userReducer.userToken,
+
+                reviewId: id,
+            }
+        }).then((response) => {
+            delete this.review;
             this.updateReviews();
         });
     };
@@ -135,7 +164,7 @@ class Reviews extends Component {
     };
 
     viewFormReview = () => {
-        if (this.review) {
+        if (this.review && !this.edit) {
             return;
         }
 
@@ -150,7 +179,7 @@ class Reviews extends Component {
                     <Comment.Content>
                         <Comment.Author>{ this.props.userReducer.userData.username }</Comment.Author>
                         <Comment.Metadata>
-                            <div><Rating maxRating={5} icon='star' defaultRating={this.state.formRating} onRate={ this.handleChangeFormRating }/></div>
+                            <div><Rating maxRating={5} icon='star' rating={this.state.formRating} onRate={ this.handleChangeFormRating }/></div>
                         </Comment.Metadata>
                         <Comment.Text>
                             <Form.TextArea rows={2} placeholder='Ваш отзыв' value={this.state.formComment}
@@ -164,6 +193,8 @@ class Reviews extends Component {
             </Form>
         );
     };
+
+
 
     render() {
         return (

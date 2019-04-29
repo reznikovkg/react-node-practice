@@ -53,14 +53,36 @@ app.get('/getPlaces', function (req, res, next) {
         let countPlacesOut = 0;
 
         switch (user.type) {
+            case userTypes.ADMIN:
+
+                models.Places.findAll({
+                    where: where,
+                    limit: (sortLimit ? sortLimit : null),
+                    offset: (sortPage ? (sortPage-1)*sortLimit : null),
+                    include: [
+                        { model: models.Users, as: 'user', required: true }
+                    ],
+                    order: [
+                        [sortColumn, (sortDirection === 'descending' ? 'DESC' : 'ASC' )]
+                    ]
+                })
+                    .then(places => {
+                        models.Places.findAndCount({
+                            where: where
+                        })
+                            .then(countPlaces => {
+                                countPlacesOut = Math.ceil(Number(countPlaces.count)/sortLimit);
+                                res.status(status.OK.CODE).send({'places': places, sortPageMax: countPlacesOut});
+                            });
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        res.status(status.NOT_FOUND.CODE).send({'message': 'Не найдено'});
+                    });
+                break;
             case userTypes.BUSINESS:
                 where.userId = userId;
 
-                models.Places.findAndCount({
-                    where: where
-                }).then(countPlaces => {
-                    countPlacesOut = Math.ceil(Number(countPlaces.count)/sortLimit);
-                });
 
                 models.Places.findAll({
                     where: where,
@@ -71,7 +93,12 @@ app.get('/getPlaces', function (req, res, next) {
                     ]
                 })
                     .then(places => {
-                        res.status(status.OK.CODE).send({'places': places, sortPageMax: countPlacesOut});
+                        models.Places.findAndCount({
+                            where: where
+                        }).then(countPlaces => {
+                            countPlacesOut = Math.ceil(Number(countPlaces.count)/sortLimit);
+                            res.status(status.OK.CODE).send({'places': places, sortPageMax: countPlacesOut});
+                        });
                     })
                     .catch((error) => {
                         console.log(error)
@@ -79,13 +106,6 @@ app.get('/getPlaces', function (req, res, next) {
                     });
                 break;
             case userTypes.DEFAULT:
-                models.Places.findAndCount({
-                    where: where
-                })
-                    .then(countPlaces => {
-                        countPlacesOut = Math.ceil(Number(countPlaces.count)/sortLimit);
-                    });
-
                 models.Places.findAll({
                     where: where,
                     limit: (sortLimit ? sortLimit : null),
@@ -95,7 +115,14 @@ app.get('/getPlaces', function (req, res, next) {
                     ]
                 })
                     .then(places => {
-                        res.status(status.OK.CODE).send({'places': places, sortPageMax: countPlacesOut});
+
+                        models.Places.findAndCount({
+                            where: where
+                        })
+                            .then(countPlaces => {
+                                countPlacesOut = Math.ceil(Number(countPlaces.count)/sortLimit);
+                                res.status(status.OK.CODE).send({'places': places, sortPageMax: countPlacesOut});
+                            });
                     })
                     .catch((error) => {
                         console.log(error)

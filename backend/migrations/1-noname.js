@@ -7,14 +7,14 @@ var Sequelize = require('sequelize');
  *
  * createTable "Users", deps: []
  * createTable "Places", deps: [Users]
- * createTable "Reviews", deps: [Users, Places]
+ * createTable "Reviews", deps: [Places, Users]
  *
  **/
 
 var info = {
     "revision": 1,
     "name": "noname",
-    "created": "2019-04-28T11:02:43.297Z",
+    "created": "2019-04-29T18:04:08.900Z",
     "comment": ""
 };
 
@@ -202,24 +202,24 @@ var migrationCommands = [{
                     "field": "updatedAt",
                     "allowNull": false
                 },
-                "userId": {
-                    "type": Sequelize.INTEGER,
-                    "field": "userId",
-                    "onUpdate": "CASCADE",
-                    "onDelete": "SET NULL",
-                    "references": {
-                        "model": "Users",
-                        "key": "id"
-                    },
-                    "allowNull": true
-                },
                 "placeId": {
                     "type": Sequelize.INTEGER,
                     "field": "placeId",
                     "onUpdate": "CASCADE",
-                    "onDelete": "SET NULL",
+                    "onDelete": "cascade",
                     "references": {
                         "model": "Places",
+                        "key": "id"
+                    },
+                    "allowNull": true
+                },
+                "userId": {
+                    "type": Sequelize.INTEGER,
+                    "field": "userId",
+                    "onUpdate": "CASCADE",
+                    "onDelete": "cascade",
+                    "references": {
+                        "model": "Users",
                         "key": "id"
                     },
                     "allowNull": true

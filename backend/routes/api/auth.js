@@ -64,7 +64,7 @@ app.get('/register', function (req, res, next) {
     const business = req.param('business');
 
     let type;
-    if (business) {
+    if (business === 'true') {
         type = 'business';
     } else {
         type = 'default';

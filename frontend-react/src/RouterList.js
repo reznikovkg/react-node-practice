@@ -8,6 +8,7 @@ import Profile from './components/pages/Profile';
 
 import Places from './components/pages/places/Places';
 import Place from "./components/pages/places/Place";
+import Users from "./components/pages/places/Users";
 
 const RouterList = {
     'homepage': {
@@ -46,6 +47,13 @@ const RouterList = {
         path: '/places',
         component: Places,
         access: 'all'
+    },
+
+
+    'users': {
+        path: '/users',
+        component: Users,
+        access: 'admin'
     }
 };
 

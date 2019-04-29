@@ -3,7 +3,7 @@
     "username": "root",
     "password": "1111",
     "database": "dsr_db",
-    "host": "127.0.0.1",
+    "host": "db",
     "port": "3306",
     "dialect": "mysql"
   },

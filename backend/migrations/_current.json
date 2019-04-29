@@ -95,26 +95,26 @@
                     "field": "updatedAt",
                     "seqType": "Sequelize.DATE"
                 },
-                "userId": {
-                    "allowNull": true,
-                    "references": {
-                        "model": "Users",
-                        "key": "id"
-                    },
-                    "onDelete": "SET NULL",
-                    "onUpdate": "CASCADE",
-                    "field": "userId",
-                    "seqType": "Sequelize.INTEGER"
-                },
                 "placeId": {
                     "allowNull": true,
                     "references": {
                         "model": "Places",
                         "key": "id"
                     },
-                    "onDelete": "SET NULL",
+                    "onDelete": "cascade",
                     "onUpdate": "CASCADE",
                     "field": "placeId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "userId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "Users",
+                        "key": "id"
+                    },
+                    "onDelete": "cascade",
+                    "onUpdate": "CASCADE",
+                    "field": "userId",
                     "seqType": "Sequelize.INTEGER"
                 }
             },

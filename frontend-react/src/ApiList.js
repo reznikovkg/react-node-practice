@@ -10,6 +10,12 @@ const ApiList = {
     'business_createPlaces': `${domain}/api/business/createPlaces`,
     'business_removePlaces': `${domain}/api/business/removePlaces`,
 
+    'admin_removePlaces': `${domain}/api/admin/removePlaces`,
+    'admin_removeReview': `${domain}/api/admin/removeReview`,
+
+    'admin_getUsers': `${domain}/api/admin/getUsers`,
+    'admin_removeUser': `${domain}/api/admin/removeUser`,
+
     'places_getPlaces': `${domain}/api/places/getPlaces`,
     'places_getPlace': `${domain}/api/places/getPlace`,
 

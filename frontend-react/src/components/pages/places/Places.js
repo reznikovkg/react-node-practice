@@ -110,7 +110,6 @@ class Places extends Component {
         });
     };
 
-
     removePlace = placeId => () => {
         axios.get(`${ApiList.business_removePlaces}`, {
             params: {
@@ -123,6 +122,16 @@ class Places extends Component {
         });
     };
 
+    removePlaceAdmin = placeId => () => {
+        axios.get(`${ApiList.admin_removePlaces}`, {
+            params: {
+                token: this.props.userReducer.userToken,
+                id: placeId
+            }
+        }).then((response) => {
+            this.getPlaces();
+        });
+    };
 
     //FOR TABLE
     handleSearch = (e, { value }) => {
@@ -280,6 +289,18 @@ class Places extends Component {
                                 sorted={this.state.sortColumn === 'id' ? this.state.sortDirection : null}
                                 onClick={ this.handleSort('id') }
                             >ID</Table.HeaderCell>
+                            {
+                                (()=>{
+                                    if (this.props.userReducer.userData.type === 'admin') {
+                                        return (
+                                            <Table.HeaderCell
+                                                sorted={this.state.sortColumn === 'userId' ? this.state.sortDirection : null}
+                                                onClick={ this.handleSort('userId') }
+                                            >Пользователь</Table.HeaderCell>
+                                        )
+                                    }
+                                })()
+                            }
                             <Table.HeaderCell
                                 sorted={this.state.sortColumn === 'name' ? this.state.sortDirection : null}
                                 onClick={ this.handleSort('name') }
@@ -294,6 +315,15 @@ class Places extends Component {
                             this.state.places.map( (place) => (
                                 <Table.Row key={place.id}>
                                     <Table.Cell>{ place.id }</Table.Cell>
+                                    {
+                                        (()=>{
+                                            if (this.props.userReducer.userData.type === 'admin') {
+                                                return (
+                                                    <Table.Cell>{ place.user.username }</Table.Cell>
+                                                )
+                                            }
+                                        })()
+                                    }
                                     <Table.Cell>{ place.name }</Table.Cell>
                                     <Table.Cell>{ place.contactEmail }</Table.Cell>
                                     <Table.Cell>
@@ -311,9 +341,14 @@ class Places extends Component {
                                         }
                                         {
                                             (()=>{
-                                                if (this.props.userReducer.userData.type !== 'default') {
+                                                if (this.props.userReducer.userData.type === 'business') {
                                                     return(
                                                         <Button size='mini' color={'red'} onClick={ this.removePlace(place.id) }>Удалить</Button>
+                                                    );
+                                                }
+                                                if (this.props.userReducer.userData.type === 'admin') {
+                                                    return(
+                                                        <Button size='mini' color={'red'} onClick={ this.removePlaceAdmin(place.id) }>Удалить</Button>
                                                     );
                                                 }
                                             })()

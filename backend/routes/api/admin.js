@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 
+const { Sequelize } = require('../../models/index');
+const Op = Sequelize.Op;
+
 const models = require('../../models');
 
 const status = require('../../config/const')['status'];
@@ -13,7 +16,7 @@ app.use(function (req, res, next) {
         }
     })
         .then(user => {
-            if (user.isAdmin) {
+            if (user.type === 'admin') {
                 next();
             } else {
                 res.status(status.FORBIDDEN.CODE)
@@ -27,11 +30,87 @@ app.use(function (req, res, next) {
         });
 });
 
+app.get('/removePlaces', function (req, res, next) {
+    const id = req.param('id');
+
+    models.Places.destroy({
+        where: {
+            id: id
+        }
+    }).then(() => {
+        res.status(status.OK.CODE).send({message: status.OK.MESSAGE});
+    });
+
+});
+
+app.get('/removeReview', function (req, res, next) {
+    const id = req.param('reviewId');
+
+    models.Reviews.destroy({
+        where: {
+            id: id
+        }
+    }).then(() => {
+        res.status(status.OK.CODE).send({message: status.OK.MESSAGE});
+    });
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.get('/getUsers', function (req, res, next) {
-    models.Users.findAll()
+
+    const sortColumn = req.param('sortColumn');
+    const sortDirection = req.param('sortDirection');
+    const sortPage = Number(req.param('sortPage'));
+    const sortLimit = Number(req.param('sortLimit'));
+    const sortSearch = req.param('sortSearch');
+
+    let where = {
+        type: {
+            [Op.or]: ['business', 'default']
+        }
+    };
+
+    if (sortSearch) {
+        where.username =  { [Op.like]: `%${sortSearch}%` };
+    }
+
+    models.Users.findAll({
+        where: where,
+        limit: (sortLimit ? sortLimit : null),
+        offset: (sortPage ? (sortPage-1)*sortLimit : null),
+        order: [
+            [sortColumn, (sortDirection === 'descending' ? 'DESC' : 'ASC' )]
+        ]
+    })
         .then(users => {
-            res.status(status.OK.CODE).send({users: users});
+            let countPlacesOut = 0;
+
+            models.Users.findAndCount({
+                where: where
+            })
+                .then(countPlaces => {
+                    countPlacesOut = Math.ceil(Number(countPlaces.count)/sortLimit);
+                    res.status(status.OK.CODE).send({'users': users, sortPageMax: countPlacesOut});
+                });
         })
         .catch(() => {
             res.status(status.NOT_FOUND.CODE)
@@ -39,39 +118,20 @@ app.get('/getUsers', function (req, res, next) {
         });
 });
 
-app.get('/editUser', function (req, res, next) {
-    const id = req.param('id');
-    const username = req.param('username');
-    const birthday = req.param('birthday');
 
-    models.Users.update({
-        username: username,
-        birthday: birthday
-    }, {
+
+app.get('/removeUser', function (req, res, next) {
+    const id = req.param('id');
+
+
+    models.Users.destroy({
         where: {
             id: id
         }
     }).then(() => {
-        res.status(status.OK.CODE).send({message: 'Обновлено'});
-    }).catch(() => {
-        res.status(status.NOT_FOUND.CODE).send({message: status.NOT_FOUND.MESSAGE});
+        res.status(status.OK.CODE).send({message: status.OK.MESSAGE});
     });
-});
 
-app.get('/getUser', function (req, res, next) {
-    const id = req.param('id');
-
-    models.Users.findOne({
-        where: {
-            id: id
-        }
-    })
-        .then(user => {
-            res.status(status.OK.CODE).send({user: user});
-        })
-        .catch(() => {
-            res.status(status.NOT_FOUND.CODE).send({message: status.NOT_FOUND.MESSAGE});
-        });
 });
 
 

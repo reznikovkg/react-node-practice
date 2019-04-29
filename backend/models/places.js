@@ -22,8 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         Place.hasMany(models.Reviews, {
             foreignKey: 'placeId',
             onDelete: 'cascade',
-            as: 'reviews',
-            hooks: true
+            as: 'reviews'
         });
     };
     return Place;

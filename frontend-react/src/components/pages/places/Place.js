@@ -44,6 +44,9 @@ class Place extends Component{
                 <div>
                     <p>Название: <b>{ this.state.place.name }</b></p>
                     <p>Описание: <b>{ this.state.place.description }</b></p>
+                    <p>Контактный Email: <b>{ this.state.place.contactEmail }</b></p>
+                    <p>Контактный телефон: <b>{ this.state.place.contactPhone }</b></p>
+                    <p>Рабочее время: <b>{ this.state.place.workingTimeStart } - { this.state.place.workingTimeFinish }</b></p>
                 </div>
             );
         }
