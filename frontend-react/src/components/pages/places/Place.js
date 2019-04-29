@@ -52,7 +52,7 @@ class Place extends Component{
     viewReviews = () => {
         if (this.state.place) {
             return (
-                <Reviews placeId={this.props.match.params.id} reviews={ this.state.place.reviews }/>
+                <Reviews placeId={this.props.match.params.id} reviews={ this.state.place.reviews } updateReviews={ this.getPlace }/>
             );
         }
     };

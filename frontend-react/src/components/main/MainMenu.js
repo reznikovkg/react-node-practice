@@ -125,15 +125,6 @@ class MainMenu extends Component {
                                     >Список мест</Menu.Item>
                                 </Link>
                             )
-                        },
-                        {
-                            jsx: (
-                                <Link to={ RouterList.places.path } key={1}>
-                                    <Menu.Item
-                                        link
-                                    >Список пользователей</Menu.Item>
-                                </Link>
-                            )
                         }
                     ];
                 default:

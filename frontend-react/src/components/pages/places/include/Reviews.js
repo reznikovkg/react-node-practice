@@ -22,9 +22,13 @@ class Reviews extends Component {
     constructor(props) {
         super(props);
 
+        this.updateReviews = this.props.updateReviews;
+
         this.state = {
             userReview: null,
-            formComment: ''
+
+            formComment: '',
+            formRating: 0
         };
 
     }
@@ -101,7 +105,10 @@ class Reviews extends Component {
                 rating: this.state.formRating
             }
         }).then((response) => {
-
+            this.setState(
+                { userReview: null, formComment: null, formRating: 0 },
+                ()=>{this.updateReviews(); console.log(this.state.userReview) }
+                );
         });
     };
 
@@ -114,37 +121,42 @@ class Reviews extends Component {
                 placeId: this.props.placeId,
             }
         }).then((response) => {
-
+            this.setState(
+                { userReview: 1 },
+                ()=>{this.updateReviews(); console.log(this.state.userReview) }
+                );
         });
     };
 
     viewFormReview = () => {
-        if (!this.state.userReview) {
-            return (
-                <Form reply>
-                    <Comment>
-                        <Comment.Avatar as='a' src='/images/avatar/small/joe.jpg' />
-                        <Comment.Content>
-                            <Comment.Author>{ this.props.userReducer.userData.username }</Comment.Author>
-                            <Comment.Metadata>
-                                <div><Rating maxRating={5} defaultRating={0} icon='star' onRate={ this.handleChangeFormRating }/></div>
-                            </Comment.Metadata>
-                            <Comment.Text>
-                                <Form.TextArea rows={2} placeholder='Ваш отзыв' value={this.state.formContactEmail}
-                                               onChange={ this.handleChangeFormComment }/>
-                            </Comment.Text>
-                            <Comment.Actions>
-                                <Button content='Отправить' labelPosition='left' icon='edit' primary onClick={ this.saveReview }/>
-                            </Comment.Actions>
-                        </Comment.Content>
-                    </Comment>
-
-                    {/*<span>Ваша оценка </span><Rating maxRating={5} defaultRating={0} icon='star'/>*/}
-                    {/*<Form.TextArea rows={2} placeholder='Ваш отзыв'/>*/}
-                    {/*<Button content='Отправить' labelPosition='left' icon='edit' primary />*/}
-                </Form>
-            );
+        if (this.state.userReview) {
+            return;
         }
+
+        if (this.props.userReducer.userData.type !== 'default') {
+            return;
+        }
+
+        return (
+            <Form reply>
+                <Comment>
+                    <Comment.Avatar as='a' src='/images/avatar/small/joe.jpg' />
+                    <Comment.Content>
+                        <Comment.Author>{ this.props.userReducer.userData.username }</Comment.Author>
+                        <Comment.Metadata>
+                            <div><Rating maxRating={5} defaultRating={0} icon='star' onRate={ this.handleChangeFormRating }/></div>
+                        </Comment.Metadata>
+                        <Comment.Text>
+                            <Form.TextArea rows={2} placeholder='Ваш отзыв' value={this.state.formContactEmail}
+                                           onChange={ this.handleChangeFormComment }/>
+                        </Comment.Text>
+                        <Comment.Actions>
+                            <Button content='Отправить' labelPosition='left' icon='edit' primary onClick={ this.saveReview }/>
+                        </Comment.Actions>
+                    </Comment.Content>
+                </Comment>
+            </Form>
+        );
     };
 
     render() {
@@ -155,6 +167,13 @@ class Reviews extends Component {
                     <Comment.Group>
                         {
                             this.props.reviews.map( this.viewOneReview )
+                        }
+                        {
+                            (()=>{
+                                if (!this.props.reviews.length) {
+                                    return 'Отзывов ещё нет'
+                                }
+                            })()
                         }
                         {
                             this.viewFormReview()

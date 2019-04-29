@@ -13,7 +13,9 @@ import {
     Icon,
     Modal,
     Form,
-    TextArea
+    TextArea,
+    Pagination,
+    Input
 } from 'semantic-ui-react';
 
 import {
@@ -37,7 +39,9 @@ class Places extends Component {
             sortDirection: 'ascending',
             sortColumn: 'id',
             sortPage: 1,
+            sortPageMax: 1,
             sortLimit: 10,
+            sortSearch: '',
 
             formName: '',
             formDescription: '',
@@ -52,16 +56,22 @@ class Places extends Component {
         this.getPlaces();
     }
 
-    getPlaces = (sortUser = null) => {
+    getPlaces = (sortCustom = null) => {
         let sort = {
             column: this.state.sortColumn,
             direction: this.state.sortDirection,
             page: this.state.sortPage,
-            limit: this.state.sortLimit
+            limit: this.state.sortLimit,
+            search: this.state.sortSearch
         };
 
-        if (sortUser) {
-            sort = sortUser;
+        if (sortCustom) {
+            sort.column = sortCustom.column ? sortCustom.column : sort.column;
+            sort.direction = sortCustom.direction ? sortCustom.direction : sort.direction;
+            sort.page = sortCustom.page ? sortCustom.page : sort.page;
+            sort.limit = sortCustom.limit ? sortCustom.limit : sort.limit;
+            sort.search = sortCustom.search ? sortCustom.search : sort.search;
+
         }
 
         axios.get(ApiList.places_getPlaces, {
@@ -72,10 +82,11 @@ class Places extends Component {
                 sortColumn: sort.column,
                 sortDirection: sort.direction,
                 sortPage: sort.page,
-                sortLimit: sort.limit
+                sortLimit: sort.limit,
+                sortSearch: sort.search
             }
         }).then((response) => {
-            this.setState({places: response.data.places});
+            this.setState({places: response.data.places, sortPageMax: response.data.sortPageMax });
         });
     };
 
@@ -113,32 +124,27 @@ class Places extends Component {
     };
 
 
+    //FOR TABLE
+    handleSearch = (e, { value }) => {
+        this.getPlaces({
+            search: value
+        });
+    };
 
     handleSort = colName => () => {
         if (this.state.sortColumn !== colName) {
-            this.setState({sortColumn: colName, sortDirection: 'ascending'});
-            this.getPlaces({
-                column: colName,
-                direction: 'ascending',
-                page: this.state.sortPage,
-                limit: this.state.sortLimit
-            });
+            this.setState({sortColumn: colName, sortDirection: 'ascending'}, ()=>{this.getPlaces()});
             return
         }
 
         const direction = (this.state.sortDirection === 'ascending' ? 'descending' : 'ascending');
 
-        this.setState({
-            sortDirection: direction,
-        });
-        this.getPlaces({
-            column: colName,
-            direction: direction,
-            page: this.state.sortPage,
-            limit: this.state.sortLimit
-        });
+        this.setState({ sortDirection: direction }, ()=>{this.getPlaces()});
     };
 
+    handlePaginationChange = (e, { activePage }) => {
+        this.setState({sortPage: activePage}, ()=>{this.getPlaces()});
+    };
 
     //FOR FORM
     handleChangeFormName = (e) => {
@@ -175,7 +181,7 @@ class Places extends Component {
         }
 
         return (
-            <Button icon compact color={'green'} labelPosition='left' onClick={ this.actionModalCreateNewPlace }>
+            <Button icon color={'green'} labelPosition='left' onClick={ this.actionModalCreateNewPlace }>
                 <Icon name='plus' />
                 Добавить
             </Button>
@@ -260,12 +266,14 @@ class Places extends Component {
         return (
             <div>
                 <h3>Список мест</h3>
-
                 {
                     this.btnCreateNewPlace()
                 }
-
-                <Table sortable celled fixed>
+                {
+                    this.modalCreateNewPlace()
+                }
+                <Input icon='search' size='small' placeholder='Поиск по названию' onChange={ this.handleSearch }/>
+                <Table sortable celled>
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell
@@ -290,20 +298,42 @@ class Places extends Component {
                                     <Table.Cell>{ place.contactEmail }</Table.Cell>
                                     <Table.Cell>
                                         <Link to={RouterList.place.pathWithParams(place.id)} >
-                                            <Button compact>Просмотр</Button>
+                                            <Button size='mini'>Просмотр</Button>
                                         </Link>
-                                        <Button compact>Статистика</Button>
-                                        <Button compact color={'red'} onClick={ this.removePlace(place.id) }>Удалить</Button>
+                                        {
+                                            (()=>{
+                                                if (this.props.userReducer.userData.type === 'business') {
+                                                    return(
+                                                        <Button size='mini'>Статистика</Button>
+                                                    );
+                                                }
+                                            })()
+                                        }
+                                        {
+                                            (()=>{
+                                                if (this.props.userReducer.userData.type !== 'default') {
+                                                    return(
+                                                        <Button size='mini' color={'red'} onClick={ this.removePlace(place.id) }>Удалить</Button>
+                                                    );
+                                                }
+                                            })()
+                                        }
                                     </Table.Cell>
                                 </Table.Row>
                             ))
                         }
                     </Table.Body>
                 </Table>
-                {
-                    this.modalCreateNewPlace()
-                }
 
+                <Pagination
+                    activePage={this.state.sortPage}
+                    boundaryRange={1}
+                    onPageChange={this.handlePaginationChange}
+                    size='mini'
+                    totalPages={this.state.sortPageMax}
+                    firstItem={ false }
+                    lastItem={ false }
+                />
             </div>
         );
     }
