@@ -4,7 +4,7 @@
 
     git clone https://github.com/reznikovkg/react-node-practice
     
-    cd maps-node-vue
+    cd react-node-practice
 
 ## Run a project ##
 
