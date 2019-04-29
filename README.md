@@ -2,7 +2,7 @@
 
 ## Deploy a project ##
 
-    git clone https://github.com/reznikovkg/maps-node-vue
+    git clone https://github.com/reznikovkg/react-node-practice
     
     cd maps-node-vue
 
@@ -10,13 +10,13 @@
 
 #### Need 2 session of terminal ####
 
-    docker-compose up
+    sudo docker-compose up
    
 After deploying the docker (this lasts a long time). Run the second terminal and command:
 
-    sh deploy-project.sh
+    sudo sh deploy-project.sh
     
-**After open: [http://localhost:8080](http://localhost:3000)**
+**After open: [http://localhost:3000](http://localhost:3000)**
 
 ### Database ###
 
