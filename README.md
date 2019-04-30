@@ -1,10 +1,16 @@
-## MAPS-NODE-VUE ##
+## react-node-practice ##
 
 ## Deploy a project ##
 
     git clone https://github.com/reznikovkg/react-node-practice
     
     cd react-node-practice
+    
+    cd backend
+    npm install
+    
+    cd ../frontend-react
+    npm install
 
 ## Run a project ##
 
