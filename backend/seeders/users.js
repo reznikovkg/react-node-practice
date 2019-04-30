@@ -9,7 +9,7 @@ module.exports = {
                 password: 'admin',
                 token: 'admin',
                 isActivate: 1,
-                type: 'dafault',
+                type: 'admin',
                 name: 'admin',
                 birthday: '1990-05-06',
                 gender: 'm',
