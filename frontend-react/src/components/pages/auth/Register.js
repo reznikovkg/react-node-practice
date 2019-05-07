@@ -41,6 +41,10 @@ class Register extends Component{
     constructor(props) {
         super(props);
 
+        if (this.props.userReducer.userToken) {
+            this.props.history.push('/');
+        }
+
         this.state = {
             step: 0,
 
@@ -182,10 +186,6 @@ class Register extends Component{
     };
 
     render() {
-        if (this.props.userReducer.userToken) {
-            this.props.history.push('/');
-        }
-
         const steps = [
             {
                 jsx: (

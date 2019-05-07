@@ -27,6 +27,10 @@ class Login extends Component{
     constructor(props) {
         super(props);
 
+        if (this.props.userReducer.userToken) {
+            this.props.history.push('/');
+        }
+
         this.state = {
             form: {
                 username: '',
@@ -69,9 +73,6 @@ class Login extends Component{
     };
 
     render() {
-        if (this.props.userReducer.userToken) {
-            this.props.history.push('/');
-        }
 
         return (
             <div>
