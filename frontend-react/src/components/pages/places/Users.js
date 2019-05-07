@@ -67,7 +67,10 @@ class Users extends Component {
             }
         }).then((response) => {
             this.setState({users: response.data.users, sortPageMax: response.data.sortPageMax });
-        });
+        })
+            .catch((error) => {
+                console.log('error: ', error);
+            });
     };
 
 
@@ -80,7 +83,10 @@ class Users extends Component {
             }
         }).then((response) => {
             this.getUsers();
-        });
+        })
+            .catch((error) => {
+                console.log('error: ', error);
+            });
     };
 
     //FOR TABLE

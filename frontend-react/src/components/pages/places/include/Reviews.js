@@ -13,6 +13,7 @@ import {
 import axios from "axios/index";
 import ApiList from "../../../../ApiList";
 
+import conf from './../../../../const/conf';
 
 const mapStateToProps = state => ({
     ...state
@@ -40,7 +41,13 @@ class Reviews extends Component {
 
             return (
                 <Comment key={ this.review.id }>
-                    <Comment.Avatar as='a' src='/images/avatar/small/joe.jpg' />
+                    {
+                        (()=>{
+                            if (this.review.user.photo) {
+                                return <Comment.Avatar as='a' src={ `${conf.domainServer}${this.review.user.photo}` } />
+                            }
+                        })()
+                    }
                     <Comment.Content>
                         <Comment.Author>{ this.review.user.username } (Это вы)</Comment.Author>
                         <Comment.Metadata>
@@ -64,7 +71,13 @@ class Reviews extends Component {
 
         return (
             <Comment key={review.id}>
-                <Comment.Avatar as='a' src='/images/avatar/small/joe.jpg' />
+                {
+                    (()=>{
+                        if (review.user.photo) {
+                            return <Comment.Avatar as='a' src={ `${conf.domainServer}${review.user.photo}` } />
+                        }
+                    })()
+                }
                 <Comment.Content>
                     <Comment.Author>{ review.user.username }</Comment.Author>
                     <Comment.Metadata>
@@ -119,7 +132,10 @@ class Reviews extends Component {
                 formRating: 0
             });
             this.updateReviews();
-        });
+        })
+            .catch((error) => {
+                console.log('error: ', error);
+            });
     };
 
     removeReview = () => {
@@ -135,7 +151,10 @@ class Reviews extends Component {
             delete this.review;
             console.log(this.review);
             this.updateReviews();
-        });
+        })
+            .catch((error) => {
+                console.log('error: ', error);
+            });
     };
 
     removeReviewAdmin = id => () => {
@@ -148,7 +167,10 @@ class Reviews extends Component {
         }).then((response) => {
             delete this.review;
             this.updateReviews();
-        });
+        })
+            .catch((error) => {
+                console.log('error: ', error);
+            });
     };
 
     editReview = () => {
@@ -175,7 +197,13 @@ class Reviews extends Component {
         return (
             <Form reply>
                 <Comment>
-                    <Comment.Avatar as='a' src='/images/avatar/small/joe.jpg' />
+                    {
+                        (()=>{
+                            if (this.props.userReducer.userData.photo) {
+                                return <Comment.Avatar as='a' src={ `${conf.domainServer}${this.props.userReducer.userData.photo}` } />
+                            }
+                        })()
+                    }
                     <Comment.Content>
                         <Comment.Author>{ this.props.userReducer.userData.username }</Comment.Author>
                         <Comment.Metadata>

@@ -25,6 +25,11 @@ import {
 
 import { StandaloneSearchBox } from 'react-google-maps/lib/components/places/StandaloneSearchBox';
 
+import Style from './../../../const/style';
+
+import Cropper from 'react-cropper';
+import 'cropperjs/dist/cropper.css';
+
 const mapStateToProps = state => ({
     ...state
 });
@@ -50,26 +55,26 @@ class Register extends Component{
             formGender: '',
             formAddress: '',
             formAbout: '',
-            formPhoto: ''
+            formPhoto: null,
         };
     }
 
     toRegister = () => {
-        axios.get(`${ApiList.auth_register}`, {
-            params: {
-                username: this.state.formUsername,
-                password: this.state.formPassword,
-                email: this.state.formEmail,
-                business: this.state.formBusiness,
+        const data = new FormData();
+        data.append('file', this.state.formPhoto);
+        data.append('username', this.state.formUsername);
+        data.append('password', this.state.formPassword);
+        data.append('email', this.state.formEmail);
+        data.append('business', this.state.formBusiness);
 
-                name: this.state.formName,
-                phone: this.state.formPhone,
-                birthday: this.state.formBirthday,
-                gender: this.state.formGender,
-                address: this.state.formAddress,
-                about: this.state.formAbout
-            }
-        })
+        data.append('name', this.state.formName);
+        data.append('phone', this.state.formPhone);
+        data.append('birthday', this.state.formBirthday);
+        data.append('gender', this.state.formGender);
+        data.append('address', this.state.formAddress);
+        data.append('about', this.state.formAbout);
+
+        axios.post(`${ApiList.auth_register}`, data)
             .then((response) => {
                 console.log('register ok');
 
@@ -78,7 +83,7 @@ class Register extends Component{
             })
             .catch((error) => {
                 console.log('error: ', error);
-            })
+            });
     };
 
     // STEP 1
@@ -147,8 +152,33 @@ class Register extends Component{
         this.setState({ formAbout: e.target.value });
     };
 
-    handleChangeFormPhoto = (event, {name, value}) => {
-        this.setState({ formBirthday: value });
+    handleChangeFormPhoto = (e) => {
+        let reader = new FileReader();
+        let file = e.target.files[0];
+
+        reader.onloadend = () => {
+            this.setState({
+                pictureFile: file,
+                pictureUrl: reader.result
+            });
+        };
+
+        reader.readAsDataURL(file);
+    };
+
+    savePhoto = () => {
+        if (typeof this.cropper.getCroppedCanvas() === 'undefined') {
+            return;
+        }
+        this.setState({
+            cropResult: this.cropper.getCroppedCanvas().toDataURL()
+        });
+
+        this.cropper.getCroppedCanvas().toBlob(blob => {
+            this.setState({
+                formPhoto: blob
+            });
+        });
     };
 
     render() {
@@ -222,7 +252,13 @@ class Register extends Component{
                         </Form.Field>
                         <Form.Field>
                             <label>Фото</label>
-                            <input placeholder='Введите пароль' type='password' onChange={ this.handleChangeFormPhoto }/>
+                            <input type='file' placeholder='Выберете фото' value={this.state.formAddress} onChange={ this.handleChangeFormPhoto }/>
+                            <Cropper
+                                ref={ cropper => { this.cropper = cropper; } }
+                                src={ this.state.pictureUrl }
+                                style={ Style.cropper }
+                                aspectRatio={1}
+                                guides={false}  />
                         </Form.Field>
                     </Form>
                 )
@@ -251,7 +287,7 @@ class Register extends Component{
                         })() }</b></p>
                         <p>Место проживания: <b>{ this.state.formAddress }</b></p>
                         <p>О себе: <b>{ this.state.formAbout }</b></p>
-                        <p>Фото: <b>{ this.state.formPhoto }</b></p>
+                        <p>Фото: <img src={ this.state.cropResult } alt=""/></p>
                     </Form>
                 )
             },
@@ -278,7 +314,7 @@ class Register extends Component{
                                 (() => {
                                     if (this.state.step < 3) {
                                         return (
-                                            <Grid style={{marginTop: '14px' }} columns={2}>
+                                            <Grid style={ Style.grid } columns={2}>
                                                 <Grid.Column floated='left'>
                                                     {
                                                         (() => {
@@ -295,7 +331,12 @@ class Register extends Component{
                                                         (() => {
                                                             if (this.state.step < 2) {
                                                                 return (
-                                                                    <Button color='blue' compact onClick={ () =>{ this.setState({step:this.state.step + 1})} }>Вперед</Button>
+                                                                    <Button color='blue' compact onClick={ () =>{
+                                                                        if (this.state.step === 1) {
+                                                                            this.savePhoto();
+                                                                        }
+                                                                        this.setState({step:this.state.step + 1});
+                                                                    } }>Вперед</Button>
                                                                 )
                                                             } else {
                                                                 return (

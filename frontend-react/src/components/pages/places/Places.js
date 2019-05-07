@@ -22,6 +22,8 @@ import {
     TimeInput
 } from 'semantic-ui-calendar-react';
 import RouterList from "../../../RouterList";
+import Style from "../../../const/style";
+import Cropper from "react-cropper";
 
 const mapStateToProps = state => ({
     ...state
@@ -87,27 +89,38 @@ class Places extends Component {
             }
         }).then((response) => {
             this.setState({places: response.data.places, sortPageMax: response.data.sortPageMax });
-        });
+        })
+            .catch((error) => {
+                console.log('error: ', error);
+            });
     };
 
     saveNewPlace = () => {
-        axios.get(`${ApiList.business_createPlaces}`, {
-            params: {
-                token: this.props.userReducer.userToken,
-                userId: this.props.userReducer.userData.id,
-                name: this.state.formName,
-                description: this.state.formDescription,
-                address: this.state.formAddress,
-                contactEmail: this.state.formContactEmail,
-                contactPhone: this.state.formContactPhone,
-                workingTimeStart: this.state.formWorkingTimeStart,
-                workingTimeFinish: this.state.formWorkingTimeFinish,
-                picture: this.state.formPicture
-            }
-        }).then((response) => {
-            this.actionModalCreateNewPlace();
-            this.getPlaces();
-        });
+
+        this.handleSaveCrop();
+
+        const data = new FormData();
+        data.append('file', this.state.formPicture);
+
+        data.append('token', this.props.userReducer.userToken);
+        data.append('userId', this.props.userReducer.userData.id);
+
+        data.append('name', this.state.formName);
+        data.append('description', this.state.formDescription);
+        data.append('address', this.state.formAddress);
+        data.append('contactEmail', this.state.formContactEmail);
+        data.append('contactPhone', this.state.formContactPhone);
+        data.append('workingTimeStart', this.state.formWorkingTimeStart);
+        data.append('workingTimeFinish', this.state.formWorkingTimeFinish);
+
+        axios.post(`${ApiList.business_createPlaces}`, data)
+            .then((response) => {
+                this.actionModalCreateNewPlace();
+                this.getPlaces();
+            })
+            .catch((error) => {
+                console.log('error: ', error);
+            });
     };
 
     removePlace = placeId => () => {
@@ -119,7 +132,10 @@ class Places extends Component {
             }
         }).then((response) => {
             this.getPlaces();
-        });
+        })
+            .catch((error) => {
+                console.log('error: ', error);
+            });
     };
 
     removePlaceAdmin = placeId => () => {
@@ -130,7 +146,10 @@ class Places extends Component {
             }
         }).then((response) => {
             this.getPlaces();
-        });
+        })
+            .catch((error) => {
+                console.log('error: ', error);
+            });
     };
 
     //FOR TABLE
@@ -170,6 +189,38 @@ class Places extends Component {
 
     handleChangeFormContactPhone = (e) => {
         this.setState({ formContactPhone: e.target.value });
+    };
+
+    handleChangeFormPicture = (e) => {
+        let reader = new FileReader();
+        let file = e.target.files[0];
+
+        reader.onloadend = () => {
+            this.setState({
+                pictureFile: file,
+                pictureUrl: reader.result
+            });
+        };
+
+        reader.readAsDataURL(file);
+
+
+    };
+
+    handleSaveCrop = () => {
+
+        if (typeof this.cropper.getCroppedCanvas() === 'undefined') {
+            return;
+        }
+        this.setState({
+            cropResult: this.cropper.getCroppedCanvas().toDataURL()
+        });
+
+        this.cropper.getCroppedCanvas().toBlob(blob => {
+            this.setState({
+                formPicture: blob
+            });
+        });
     };
 
     handleChangeFormWorkingTimeStart = (event, {name, value}) => {
@@ -235,6 +286,16 @@ class Places extends Component {
                             <Form.Field>
                                 <label>Контактный телефон</label>
                                 <input placeholder='Введите телефон' value={this.state.formContactPhone} onChange={ this.handleChangeFormContactPhone }/>
+                            </Form.Field>
+                            <Form.Field>
+                                <label>Изображение</label>
+                                <input type='file' placeholder='Выберете изображение'  onChange={ this.handleChangeFormPicture }/>
+                                <Cropper
+                                    ref={ cropper => { this.cropper = cropper; } }
+                                    src={ this.state.pictureUrl }
+                                    style={ Style.cropper }
+                                    aspectRatio={1}
+                                    guides={false}  />
                             </Form.Field>
                             <Form.Field>
                                 <label>Начало рабочего дня</label>

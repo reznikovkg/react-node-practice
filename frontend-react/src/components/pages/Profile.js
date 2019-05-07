@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from "react-redux";
+import {Image} from "semantic-ui-react";
+import conf from "../../const/conf";
 
 const mapStateToProps = state => (state);
 
@@ -20,6 +22,13 @@ class Profile extends Component{
     render() {
         return (
             <div>
+                {
+                    (()=>{
+                        if (this.props.userReducer.userData.photo) {
+                            return <Image src={ `${ conf.domainServer }${ this.props.userReducer.userData.photo }` } size='small' />
+                        }
+                    })()
+                }
                 <h3>Пользователь: { this.props.userReducer.userData.username }</h3>
                 <p>Тип аккаунта: <b>{ this.typeUser() }</b></p>
             </div>

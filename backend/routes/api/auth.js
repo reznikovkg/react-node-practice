@@ -8,6 +8,8 @@ const status = require('../../config/const')['status'];
 const domainClient = require('../../config/const')['domainClient'];
 const domainServer = require('../../config/const')['domainServer'];
 
+const multer = require('multer');
+
 app.get('/login', function (req, res, next) {
     const username = req.param('username');
     const password = req.param('password');
@@ -56,7 +58,18 @@ app.get('/login', function (req, res, next) {
         });
 });
 
-app.get('/register', function (req, res, next) {
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/user')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '.jpg' )
+    }
+});
+
+const upload = multer({ storage: storage });
+
+app.post('/register', upload.single('file'), (req, res, next) => {
     const username = req.param('username');
     const email = req.param('email');
     const password = req.param('password');
@@ -76,8 +89,9 @@ app.get('/register', function (req, res, next) {
     const gender = req.param('gender');
     const address = req.param('address');
     const about = req.param('about');
+    const photo =  req.file.path;
 
-
+    console.log(req.file);
 
     if (!((username.length > 0) &&
         (/^[a-zA-Z0-9]+$/.test(username)) &&
@@ -108,7 +122,8 @@ app.get('/register', function (req, res, next) {
         birthday,
         gender,
         address,
-        about
+        about,
+        photo
     });
 
     user.save().then(() => {
@@ -146,8 +161,7 @@ app.get('/connect', function (req, res, next) {
                 'gender': user.gender,
                 'phone': user.phone,
                 'address': user.address,
-                'photo': user.address
-
+                'photo': user.photo
             });
         });
 });

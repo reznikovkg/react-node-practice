@@ -11,6 +11,9 @@ import {
     Segment
 } from "semantic-ui-react";
 
+import conf from "../../../const/conf";
+import Chart from "./include/Chart";
+
 const mapStateToProps = state => ({
     ...state
 });
@@ -35,13 +38,17 @@ class Place extends Component{
             }
         }).then((response) => {
             this.setState({place: response.data.place })
-        });
+        })
+            .catch((error) => {
+                console.log('error: ', error);
+            });
     };
 
     viewPlace = () => {
         if (this.state.place) {
             return (
                 <div>
+                    <p>Изображение: <img src={ `${ conf.domainServer }${this.state.place.picture}` } alt=""/></p>
                     <p>Название: <b>{ this.state.place.name }</b></p>
                     <p>Описание: <b>{ this.state.place.description }</b></p>
                     <p>Контактный Email: <b>{ this.state.place.contactEmail }</b></p>
@@ -60,6 +67,14 @@ class Place extends Component{
         }
     };
 
+    viewChart = () => {
+        if (this.state.place) {
+            return (
+                <Chart placeId={this.props.match.params.id} />
+            );
+        }
+    };
+
     render() {
         return (
             <div>
@@ -71,6 +86,9 @@ class Place extends Component{
                 </Segment>
                 {
                     this.viewReviews()
+                }
+                {
+                    this.viewChart()
                 }
             </div>
         );

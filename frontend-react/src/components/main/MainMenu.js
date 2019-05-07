@@ -10,7 +10,6 @@ import RouterList from './../../RouterList';
 import {connect} from "react-redux";
 import Cookies from 'js-cookie';
 
-
 const mapStateToProps = state => (state);
 
 const mapDispatchToProps = dispatch => ({
@@ -40,7 +39,9 @@ class MainMenu extends Component {
                                     link
                                     position='right'
                                     style={{textTransform: 'uppercase'}}
-                                >{ this.props.userReducer.userData.username }</Menu.Item>
+                                >
+                                    <span>{ this.props.userReducer.userData.username }</span>
+                                </Menu.Item>
                             </Link>
                         )
                     },

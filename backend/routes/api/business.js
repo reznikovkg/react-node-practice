@@ -5,7 +5,21 @@ const models = require('../../models');
 
 const status = require('../../config/const')['status'];
 
-app.use(function (req, res, next) {
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/place')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '.jpg' )
+    }
+});
+
+const upload = multer({ storage: storage });
+
+
+app.use(upload.single('file'), function (req, res, next) {
     const token = req.param('token');
     models.Users.findOne({
         where: {
@@ -27,8 +41,7 @@ app.use(function (req, res, next) {
         });
 });
 
-
-app.get('/createPlaces', function (req, res, next) {
+app.post('/createPlaces', (req, res, next) => {
     const userId = req.param('userId');
 
     const name = req.param('name');
@@ -38,6 +51,9 @@ app.get('/createPlaces', function (req, res, next) {
     const contactPhone = req.param('contactPhone');
     const workingTimeStart = req.param('workingTimeStart');
     const workingTimeFinish = req.param('workingTimeFinish');
+    const picture =  req.file.path;
+
+    console.log(workingTimeFinish);
 
     const place = models.Places.build({
         userId,
@@ -47,11 +63,11 @@ app.get('/createPlaces', function (req, res, next) {
         contactEmail,
         contactPhone,
         workingTimeStart,
-        workingTimeFinish
+        workingTimeFinish,
+        picture
     });
 
     place.save().then(() => {
-
         res.status(status.OK.CODE).send({'message': 'Упешно'});
     }).catch(()=>{
         res.status(status.INTERVAL_SERVER_ERROR.CODE).send({'message': 'Ошибка'});

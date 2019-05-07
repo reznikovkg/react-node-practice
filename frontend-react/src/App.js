@@ -11,6 +11,8 @@ import {
 
 import  { connect } from 'react-redux';
 
+import Style from './const/style';
+
 const mapStateToProps = state => ({
     ...state
 });
@@ -44,7 +46,7 @@ class App extends Component {
             <div>
                 <MainMenu/>
                 <Container>
-                    <Container style={ {marginTop: '80px'} }>
+                    <Container style={ Style.container }>
                         {
                             Object.values(RouterList).map( viewRoute )
                         }
