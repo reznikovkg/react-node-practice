@@ -329,12 +329,41 @@ class Places extends Component {
         )
     };
 
+    btnGeneratedPlaces = () => {
+        if (this.props.userReducer.userData.type !== 'admin') {
+            return '';
+        }
+
+        return (
+            <Button icon color={'blue'} labelPosition='left' onClick={ this.sendGenerated }>
+                <Icon name='plus' />
+                Добавить 5 мест и 10 отзывов
+            </Button>
+        );
+    };
+
+    sendGenerated= () => {
+        axios.get(`${ApiList.admin_generatedPlaces}`, {
+            params: {
+                token: this.props.userReducer.userToken
+            }
+        }).then((response) => {
+            this.getPlaces();
+        })
+            .catch((error) => {
+                console.log('error: ', error);
+            });
+    };
+
     render() {
         return (
             <div>
                 <h3>Список мест</h3>
                 {
                     this.btnCreateNewPlace()
+                }
+                {
+                    this.btnGeneratedPlaces()
                 }
                 {
                     this.modalCreateNewPlace()

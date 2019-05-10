@@ -10,7 +10,7 @@ import {
     Table,
     Button,
     Pagination,
-    Input
+    Input, Icon
 } from 'semantic-ui-react';
 
 const mapStateToProps = state => ({
@@ -112,10 +112,27 @@ class Users extends Component {
     };
 
 
+    sendGenerated= () => {
+        axios.get(`${ApiList.admin_generatedUsers}`, {
+            params: {
+                token: this.props.userReducer.userToken
+            }
+        }).then((response) => {
+            this.getUsers();
+        })
+            .catch((error) => {
+                console.log('error: ', error);
+            });
+    };
+
     render() {
         return (
             <div>
                 <h3>Список ползователей</h3>
+                <Button icon color={'blue'} labelPosition='left' onClick={ this.sendGenerated }>
+                    <Icon name='plus' />
+                    Добавить 10 юзеров
+                </Button>
                 <Input icon='search' size='small' placeholder='Поиск по имени пользователя' onChange={ this.handleSearch }/>
                 <Table sortable celled>
                     <Table.Header>

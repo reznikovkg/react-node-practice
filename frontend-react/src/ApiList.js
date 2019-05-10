@@ -12,6 +12,8 @@ const ApiList = {
 
     'admin_removePlaces': `${domain}/api/admin/removePlaces`,
     'admin_removeReview': `${domain}/api/admin/removeReview`,
+    'admin_generatedPlaces': `${domain}/api/admin/generatedPlaces`,
+    'admin_generatedUsers': `${domain}/api/admin/generatedUsers`,
 
     'admin_getUsers': `${domain}/api/admin/getUsers`,
     'admin_removeUser': `${domain}/api/admin/removeUser`,
@@ -20,11 +22,6 @@ const ApiList = {
     'places_getPlace': `${domain}/api/places/getPlace`,
 
     'review_removeReview': `${domain}/api/reviews/removeReview`,
-
-    // 'register': {
-    //     path: '/register',
-    //     component: ''
-    // },
 };
 
 export default ApiList;

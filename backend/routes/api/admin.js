@@ -56,9 +56,73 @@ app.get('/removeReview', function (req, res, next) {
 
 });
 
+app.get('/generatedPlaces', function (req, res, next) {
+
+    models.Places.findOne({
+        order: [
+            ['id', 'DESC']
+        ]
+    }).then( place => {
+
+        for (let i = place.id + 1; i < place.id + 11; i++) {
+
+            const placename = 'place' + i;
+
+            models.Users.findOne({
+                where: {
+                    type: 'business'
+                }
+            }).then(user => {
+                const place = models.Places.build({
+                    name: placename,
+                    userId: user.id
+                });
+
+                place.save().then(() => {
+
+                });
+            });
+        }
+
+        res.status(status.OK.CODE).send({message: status.OK.MESSAGE});
+    });
+});
 
 
+app.get('/generatedUsers', function (req, res, next) {
 
+    models.Users.findOne({
+        order: [
+            ['id', 'DESC']
+        ]
+    }).then( user => {
+        for (let i = user.id + 1; i < user.id + 11; i++) {
+            const username = 'user' + i;
+
+            const user = models.Users.build({
+                username: username,
+                email: username + '@site.ru',
+                password: username,
+                token: username,
+                type: 'default',
+                name: username,
+                isActivate: 1,
+                phone: i,
+                birthday: '01-01-1990',
+                gender: 'm',
+                address: 'voronezh',
+                about: username,
+                photo: 'public/user/default.jpg'
+            });
+
+            user.save().then(() => {
+
+            });
+        }
+
+        res.status(status.OK.CODE).send({message: status.OK.MESSAGE});
+    });
+});
 
 
 
