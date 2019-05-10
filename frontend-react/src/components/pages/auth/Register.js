@@ -8,7 +8,7 @@ import {
     Button,
     Checkbox,
     TextArea,
-    Select
+    Select, Label
 } from 'semantic-ui-react';
 
 import axios from 'axios';
@@ -48,11 +48,21 @@ class Register extends Component{
         this.state = {
             step: 0,
 
+            //FORM 1
             formUsername: '',
             formEmail: '',
             formPassword: '',
             formBusiness: false,
 
+            validUsername: null,
+            validEmail: null,
+            validPassword: null,
+
+            statusUsername: null,
+            statusEmail: null,
+            statusPassword: null,
+
+            //FORM 2
             formName: '',
             formPhone: '',
             formBirthday: '01-01-2019',
@@ -60,6 +70,20 @@ class Register extends Component{
             formAddress: '',
             formAbout: '',
             formPhoto: null,
+
+            validName: null,
+            validPhone: null,
+            validGender: null,
+            validAddress: null,
+            validAbout: null,
+            validPhoto: null,
+
+            statusName: null,
+            statusPhone: null,
+            statusGender: null,
+            statusAddress: null,
+            statusAbout: null,
+            statusPhoto: null
         };
     }
 
@@ -92,24 +116,166 @@ class Register extends Component{
 
     // STEP 1
     handleChangeFormUsername = (e) => {
-        this.setState({ formUsername: e.target.value });
+        this.setState({ formUsername: e.target.value }, this.checkValidUsername );
     };
 
     handleChangeFormEmail = (e) => {
-        this.setState({ formEmail: e.target.value });
+        this.setState({ formEmail: e.target.value }, this.checkValidEmail );
     };
 
     handleChangeFormPassword = (e) => {
-        this.setState({ formPassword: e.target.value });
+        this.setState({ formPassword: e.target.value }, this.checkValidPassword );
     };
 
     handleChangeFormBusiness = (e) => {
         this.setState({ formBusiness: !this.state.formBusiness });
     };
 
+    classNameFormUsername = () => {
+        if (this.state.validUsername === false) {
+            return 'error';
+        }
+    };
+
+    classNameFormEmail = () => {
+        if (this.state.validEmail === false) {
+            return 'error';
+        }
+    };
+
+    classNameFormPassword = () => {
+        if (this.state.validPassword === false) {
+            return 'error';
+        }
+    };
+
+    viewStatusUsername = () => {
+        if (this.state.validUsername === null) {
+            return;
+        }
+
+        if (this.state.validUsername === false) {
+            return (
+                <Label basic color='red' pointing>
+                    { this.state.statusUsername }
+                </Label>
+            );
+        }
+    };
+
+    viewStatusPassword = () => {
+        if (this.state.validPassword === null) {
+            return;
+        }
+
+        if (this.state.validPassword === false) {
+            return (
+                <Label basic color='red' pointing>
+                    { this.state.statusPassword }
+                </Label>
+            );
+        }
+    };
+
+    viewStatusEmail = () => {
+        if (this.state.validEmail === null) {
+            return;
+        }
+
+        if (this.state.validEmail === false) {
+            return (
+                <Label basic color='red' pointing>
+                    { this.state.statusEmail }
+                </Label>
+            );
+        }
+    };
+
+    checkValidUsername = () => {
+        if (this.state.formUsername.length === 0) {
+            this.setState({ validUsername: false, statusUsername: 'Логин не должен быть пустым' });
+            return
+        }
+
+        if (/^[a-zA-Z0-9]+$/.test(this.state.formUsername)) {
+            this.setState({ validUsername: true });
+        } else {
+            this.setState({ validUsername: false, statusUsername: 'Логин должен содержать только латинские буквы и цифры.' });
+        }
+    };
+
+    checkValidPassword = () => {
+        if (this.state.formPassword.length === 0) {
+            this.setState({ validPassword: false, statusPassword: 'Пароль не должен быть пустым' });
+            return
+        }
+
+        if (/^[a-zA-Z0-9*#!+]+$/.test(this.state.formPassword)) {
+            this.setState({ validPassword: true });
+        } else {
+            this.setState({ validPassword: false, statusPassword: 'Пароль должен содержать только латинские буквы, цифры и символы: *, #, !, +.' });
+        }
+    };
+
+    checkValidEmail = () => {
+        if (this.state.formEmail.length === 0) {
+            this.setState({ validEmail: false, statusEmail: 'Email не должен быть пустым' });
+            return
+        }
+
+        if (/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(this.state.formEmail)) {
+            this.setState({ validEmail: true });
+        } else {
+            this.setState({ validEmail: false, statusEmail: 'Email должен соответствовать маске - user@yandex.ru' });
+        }
+    };
+
+    toTwoStep = () => {
+        if (this.state.validUsername && this.state.validEmail && this.state.validPassword ) {
+            this.setState({ step: this.state.step + 1 })
+        } else {
+            this.checkValidUsername();
+            this.checkValidEmail();
+            this.checkValidPassword();
+        }
+    };
+
     //STEP 2
     handleChangeFormName = (e) => {
         this.setState({ formName: e.target.value });
+    };
+
+    viewStatusName = () => {
+        if (this.state.validName === null) {
+            return;
+        }
+
+        if (this.state.validName === false) {
+            return (
+                <Label basic color='red' pointing>
+                    { this.state.statusName }
+                </Label>
+            );
+        }
+    };
+
+    classNameFormName = () => {
+        if (this.state.validName === false) {
+            return 'error';
+        }
+    };
+
+    checkValidName = () => {
+        if (this.state.formName.length === 0) {
+            this.setState({ validName: false, statusName: 'Имя не должно быть пустым' });
+            return
+        }
+
+        if (/^[a-zA-Zа-яА-Я]+$/.test(this.state.formName)) {
+            this.setState({ validName: true });
+        } else {
+            this.setState({ validName: false, statusName: 'Имя должно содержать только латинские и/или русские буквы' });
+        }
     };
 
     handleChangeFormPhone = (e) => {
@@ -185,36 +351,63 @@ class Register extends Component{
         });
     };
 
+
+    toThreeStep = () => {
+        if (this.state.validName) {
+            this.setState({ step: this.state.step + 1 })
+        } else {
+            this.checkValidName();
+        }
+    };
+
     render() {
         const steps = [
             {
                 jsx: (
                     <Form id={'form1'}>
-                        <Form.Field>
+                        <Form.Field className={ this.classNameFormUsername() }>
                             <label>Логин</label>
                             <input placeholder='Введите логин' value={this.state.formUsername} onChange={ this.handleChangeFormUsername }/>
+                            {
+                                this.viewStatusUsername()
+                            }
                         </Form.Field>
-                        <Form.Field>
+                        <Form.Field className={ this.classNameFormEmail() }>
                             <label>Email</label>
                             <input placeholder='Введите email' value={this.state.formEmail} onChange={ this.handleChangeFormEmail }/>
+                            {
+                                this.viewStatusEmail()
+                            }
                         </Form.Field>
-                        <Form.Field>
+                        <Form.Field className={ this.classNameFormPassword() }>
                             <label>Пароль</label>
                             <input placeholder='Введите пароль' type='password' value={this.state.formPassword} onChange={ this.handleChangeFormPassword }/>
+                            {
+                                this.viewStatusPassword()
+                            }
                         </Form.Field>
                         <Form.Field>
                             <Checkbox checked={this.state.formBusiness} label={<label>Бизнес-аккаунт</label>} toggle
                                       onChange={ this.handleChangeFormBusiness }/>
                         </Form.Field>
+
+                        <Grid style={ Style.grid } columns={1}>
+                            <Grid.Column floated='right' textAlign='right'>
+                                <Button color='blue' compact onClick={ this.toTwoStep }>Вперед</Button>
+                            </Grid.Column>
+                        </Grid>
                     </Form>
                 )
             },
             {
                 jsx: (
                     <Form id={'form2'}>
-                        <Form.Field>
+                        <Form.Field className={ this.classNameFormName() }>
                             <label>Имя</label>
                             <input placeholder='Введите имя' value={this.state.formName} onChange={ this.handleChangeFormName }/>
+                            {
+                                this.viewStatusName()
+                            }
                         </Form.Field>
                         <Form.Field>
                             <label>Телефон</label>
@@ -252,7 +445,7 @@ class Register extends Component{
                         </Form.Field>
                         <Form.Field>
                             <label>Фото</label>
-                            <input type='file' placeholder='Выберете фото' value={this.state.formAddress} onChange={ this.handleChangeFormPhoto }/>
+                            <input type='file' placeholder='Выберете фото' onChange={ this.handleChangeFormPhoto }/>
                             <Cropper
                                 ref={ cropper => { this.cropper = cropper; } }
                                 src={ this.state.pictureUrl }
@@ -260,6 +453,15 @@ class Register extends Component{
                                 aspectRatio={1}
                                 guides={false}  />
                         </Form.Field>
+
+                        <Grid style={ Style.grid } columns={2}>
+                            <Grid.Column floated='left'>
+                                <Button color='grey' compact onClick={ () =>{ this.setState({step:this.state.step - 1})} }>Назад</Button>
+                            </Grid.Column>
+                            <Grid.Column floated='right' textAlign='right'>
+                                <Button color='blue' compact onClick={ this.toThreeStep }>Вперед</Button>
+                            </Grid.Column>
+                        </Grid>
                     </Form>
                 )
             },
@@ -288,6 +490,12 @@ class Register extends Component{
                         <p>Место проживания: <b>{ this.state.formAddress }</b></p>
                         <p>О себе: <b>{ this.state.formAbout }</b></p>
                         <p>Фото: <img src={ this.state.cropResult } alt=""/></p>
+
+                        <Grid style={ Style.grid } columns={1}>
+                            <Grid.Column floated='right' textAlign='right'>
+                                <Button color='blue' compact onClick={ this.toTwoStep }>Вперед</Button>
+                            </Grid.Column>
+                        </Grid>
                     </Form>
                 )
             },
@@ -310,48 +518,48 @@ class Register extends Component{
                             {
                                 steps[this.state.step].jsx
                             }
-                            {
-                                (() => {
-                                    if (this.state.step < 3) {
-                                        return (
-                                            <Grid style={ Style.grid } columns={2}>
-                                                <Grid.Column floated='left'>
-                                                    {
-                                                        (() => {
-                                                            if (this.state.step > 0) {
-                                                                return (
-                                                                    <Button color='grey' compact onClick={ () =>{ this.setState({step:this.state.step - 1})} }>Назад</Button>
-                                                                )
-                                                            }
-                                                        })()
-                                                    }
-                                                </Grid.Column>
-                                                <Grid.Column floated='right' textAlign='right'>
-                                                    {
-                                                        (() => {
-                                                            if (this.state.step < 2) {
-                                                                return (
-                                                                    <Button color='blue' compact onClick={ () =>{
-                                                                        if (this.state.step === 1) {
-                                                                            this.savePhoto();
-                                                                        }
-                                                                        this.setState({step:this.state.step + 1});
-                                                                    } }>Вперед</Button>
-                                                                )
-                                                            } else {
-                                                                return (
-                                                                    <Button color='green' compact onClick={ this.toRegister }>Завершить</Button>
-                                                                )
-                                                            }
-                                                        })()
-                                                    }
+                            {/*{*/}
+                            {/*    (() => {*/}
+                            {/*        if (this.state.step < 3) {*/}
+                            {/*            return (*/}
+                            {/*                <Grid style={ Style.grid } columns={2}>*/}
+                            {/*                    <Grid.Column floated='left'>*/}
+                            {/*                        {*/}
+                            {/*                            (() => {*/}
+                            {/*                                if (this.state.step > 0) {*/}
+                            {/*                                    return (*/}
+                            {/*                                        <Button color='grey' compact onClick={ () =>{ this.setState({step:this.state.step - 1})} }>Назад</Button>*/}
+                            {/*                                    )*/}
+                            {/*                                }*/}
+                            {/*                            })()*/}
+                            {/*                        }*/}
+                            {/*                    </Grid.Column>*/}
+                            {/*                    <Grid.Column floated='right' textAlign='right'>*/}
+                            {/*                        {*/}
+                            {/*                            (() => {*/}
+                            {/*                                if (this.state.step < 2) {*/}
+                            {/*                                    return (*/}
+                            {/*                                        <Button color='blue' compact onClick={ () =>{*/}
+                            {/*                                            if (this.state.step === 1) {*/}
+                            {/*                                                this.savePhoto();*/}
+                            {/*                                            }*/}
+                            {/*                                            this.setState({step:this.state.step + 1});*/}
+                            {/*                                        } }>Вперед</Button>*/}
+                            {/*                                    )*/}
+                            {/*                                } else {*/}
+                            {/*                                    return (*/}
+                            {/*                                        <Button color='green' compact onClick={ this.toRegister }>Завершить</Button>*/}
+                            {/*                                    )*/}
+                            {/*                                }*/}
+                            {/*                            })()*/}
+                            {/*                        }*/}
 
-                                                </Grid.Column>
-                                            </Grid>
-                                        );
-                                    }
-                                })()
-                            }
+                            {/*                    </Grid.Column>*/}
+                            {/*                </Grid>*/}
+                            {/*            );*/}
+                            {/*        }*/}
+                            {/*    })()*/}
+                            {/*}*/}
                         </Segment>
                     </Grid.Column>
                 </Grid>

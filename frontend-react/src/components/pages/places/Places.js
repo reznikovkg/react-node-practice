@@ -203,12 +203,9 @@ class Places extends Component {
         };
 
         reader.readAsDataURL(file);
-
-
     };
 
     handleSaveCrop = () => {
-
         if (typeof this.cropper.getCroppedCanvas() === 'undefined') {
             return;
         }
