@@ -4,7 +4,6 @@ import  { connect } from 'react-redux';
 
 import {
     Button,
-    Grid,
     Segment
 } from "semantic-ui-react";
 
@@ -29,15 +28,20 @@ class ChartReact extends Component {
             reviews: [],
 
             dateStart: '01-01-1990',
-            dateFinish: `${ dateNow.getDate() }-${ dateNow.getMonth()+1 }-${ dateNow.getFullYear() }`,
+            dateFinish: `${ ("0" + (dateNow.getDate())).slice(-2) }-${ ("0" + (dateNow.getMonth()+1)).slice(-2) }-${ dateNow.getFullYear() }`,
 
             means: {
                 day: 0,
                 week: 0,
                 month: 0,
                 year: 0
-            }
+            },
+
+            labels: [],
+            dataChart: []
         };
+
+        this.getReviews();
     }
 
     getReviews = () => {
@@ -52,7 +56,7 @@ class ChartReact extends Component {
             }
         })
             .then((response) => {
-                this.setState({reviews: response.data.reviews, means: response.data.means}, this.plotChart );
+                this.setState({labels: response.data.reviewsToChart.date, dataChart:response.data.reviewsToChart.rating, means: response.data.means, }, this.plotChart );
             })
             .catch((error) => {
                 console.log('error: ', error);
@@ -61,13 +65,13 @@ class ChartReact extends Component {
 
     plotChart = () => {
         let ctx = document.getElementById('myChart');
-        let myChart = new Chart(ctx, {
+        new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: this.state.labels,
                 datasets: [{
-                    label: 'Изменение оценки',
-                    data: [12, 19, 3, 5, 2, 3],
+                    label: 'Изменение оценки (ср.)',
+                    data: this.state.dataChart,
                     backgroundColor: 'rgba(56,255,69,0.43)',
                     borderColor: 'rgb(0,129,21)',
                     borderWidth: 1
@@ -126,7 +130,10 @@ class ChartReact extends Component {
                     </div>
 
                     <div>
-                        <p>Среднеее за день - { this.state.means.day }; за неделю - { this.state.means.week }; за месяц - { this.state.means.month }; за год - { this.state.means.year }.</p>
+                        <p>Среднеее за последний день: { this.state.means.day }</p>
+                        <p>Среднеее за последнюю неделю: { this.state.means.week }</p>
+                        <p>Среднеее за последний месяц: { this.state.means.month }</p>
+                        <p>Среднеее за последний год: { this.state.means.year }</p>
                     </div>
 
                     <canvas id="myChart" width="400" height="200"></canvas>

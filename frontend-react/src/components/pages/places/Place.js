@@ -44,11 +44,17 @@ class Place extends Component{
             });
     };
 
+    getPicture = () => {
+        if (this.state.place.picture) {
+            return `${ conf.domainServer }${this.state.place.picture}`
+        }
+    };
+
     viewPlace = () => {
         if (this.state.place) {
             return (
                 <div>
-                    <p>Изображение: <img src={ `${ conf.domainServer }${this.state.place.picture}` } alt=""/></p>
+                    <p>Изображение: <img src={ this.getPicture() } alt=""/></p>
                     <p>Название: <b>{ this.state.place.name }</b></p>
                     <p>Описание: <b>{ this.state.place.description }</b></p>
                     <p>Контактный Email: <b>{ this.state.place.contactEmail }</b></p>

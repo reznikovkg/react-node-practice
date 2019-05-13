@@ -8,7 +8,7 @@ import {
     Button,
     Checkbox,
     TextArea,
-    Select, Label
+    Select, Label, Message
 } from 'semantic-ui-react';
 
 import axios from 'axios';
@@ -110,6 +110,7 @@ class Register extends Component{
                 this.setState({step: this.state.step + 1});
             })
             .catch((error) => {
+                this.setState({ error: error.response.data.error });
                 console.log('error: ', error);
             });
     };
@@ -223,7 +224,7 @@ class Register extends Component{
             return
         }
 
-        if (/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(this.state.formEmail)) {
+        if (/^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/.test(this.state.formEmail)) {
             this.setState({ validEmail: true });
         } else {
             this.setState({ validEmail: false, statusEmail: 'Email должен соответствовать маске - user@yandex.ru' });
@@ -531,6 +532,21 @@ class Register extends Component{
         }
     };
 
+
+    viewError = () => {
+        if (this.state.error) {
+            return (
+                <Form.Field>
+                    <Message negative>
+                        <Message.Header>Ошибка</Message.Header>
+                        <p>{ this.state.error }</p>
+                    </Message>
+                </Form.Field>
+            );
+
+        }
+    };
+
     render() {
         const steps = [
             {
@@ -700,6 +716,9 @@ class Register extends Component{
                             <Header>Регистрация</Header>
                             {
                                 steps[this.state.step].jsx
+                            }
+                            {
+                                this.viewError()
                             }
                         </Segment>
                     </Grid.Column>
