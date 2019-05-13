@@ -24,11 +24,11 @@ services:
     depends_on:
       - db
 
-  front:
+  frontend-react:
     build: ./frontend-react
     command: npm start
     ports:
       - 3000:3000
     volumes:
-      - ./frontend-react:/var/www/frontend
+      - ./frontend-react:/var/www/frontend-react
 
