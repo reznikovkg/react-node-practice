@@ -337,7 +337,7 @@ class Places extends Component {
         return (
             <Button icon color={'blue'} labelPosition='left' onClick={ this.sendGenerated }>
                 <Icon name='plus' />
-                Добавить 5 мест и 10 отзывов
+                Добавить 10 мест
             </Button>
         );
     };

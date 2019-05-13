@@ -186,6 +186,34 @@ module.exports = {
                 updatedAt: '2019-04-23'
             },
             {
+                name: 'asdsa32d14',
+                description: 'asdsdasad14',
+                address: 'asdsdasad14',
+                contactEmail: 'eqweqw@dsad.ds',
+                contactPhone: '792323123',
+                workingTimeStart: '08:00',
+                workingTimeFinish: '18:00',
+
+                picture: '',
+                userId: 2,
+                createdAt: '2019-04-23',
+                updatedAt: '2019-04-23'
+            },
+            {
+                name: 'asdsadqweqw14',
+                description: 'asdseqweqwad14',
+                address: 'aseqwedsad14',
+                contactEmail: 'eqweqw@dsad.ds',
+                contactPhone: '792323123',
+                workingTimeStart: '08:00',
+                workingTimeFinish: '18:00',
+
+                picture: '',
+                userId: 2,
+                createdAt: '2019-04-23',
+                updatedAt: '2019-04-23'
+            },
+            {
                 name: 'asdsad15',
                 description: 'asdsad15',
                 address: 'asdsad15',
