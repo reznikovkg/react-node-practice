@@ -14,11 +14,23 @@ services:
 
   web:
     build: ./backend
-    command: npm start
+    command: sh start.sh
     ports:
       - 8888:8888
     volumes:
       - ./backend:/var/www/backend
     links:
       - db
+    depends_on:
+      - db
+
+  front:
+    build: ./frontend-react
+    command: npm start
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend-react:/var/www/frontend
+    depends_on:
+      - web
 

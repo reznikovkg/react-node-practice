@@ -8,6 +8,9 @@ const style = {
     cropper: {
         height: 400,
         width: '100%'
+    },
+    divFlex: {
+        display: 'flex'
     }
 };
 

@@ -22,6 +22,7 @@ const ApiList = {
     'places_getPlace': `${domain}/api/places/getPlace`,
 
     'review_removeReview': `${domain}/api/reviews/removeReview`,
+    'review_getReviews': `${domain}/api/reviews/getReviews`,
 };
 
 export default ApiList;
