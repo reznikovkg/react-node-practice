@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 
 services:
 
@@ -31,6 +31,4 @@ services:
       - 3000:3000
     volumes:
       - ./frontend-react:/var/www/frontend
-    depends_on:
-      - web
 
