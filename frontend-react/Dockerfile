@@ -1,10 +1,9 @@
-FROM node:latest
+FROM node:8
 
 WORKDIR /var/www/frontend
 
 COPY . ./
 
-RUN apt-get -y update
 RUN npm install
 
 EXPOSE 3000

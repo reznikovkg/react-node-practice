@@ -1,4 +1,4 @@
-version: '3.7'
+version: '2'
 
 services:
 
@@ -17,18 +17,16 @@ services:
     command: sh start.sh
     ports:
       - 8888:8888
-    volumes:
-      - ./backend:/var/www/backend
     links:
       - db
     depends_on:
       - db
+    environment:
+      DATABASE_URL: mysql://mysql@db
 
   frontend-react:
     build: ./frontend-react
     command: npm start
     ports:
       - 3000:3000
-    volumes:
-      - ./frontend-react:/var/www/frontend-react
 

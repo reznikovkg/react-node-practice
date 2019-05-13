@@ -5,24 +5,23 @@
     git clone https://github.com/reznikovkg/react-node-practice
     
     cd react-node-practice
-    
-    cd backend
-    npm install
-    
-    cd ../frontend-react
-    npm install
 
 ## Run a project ##
 
-#### Need 2 session of terminal ####
+Run command
 
-    sudo docker-compose up
+    docker-compose up --build
    
-After deploying the docker (this lasts a long time). Run the second terminal and command:
-
-    sudo sh deploy-project.sh
-    
 **After open: [http://localhost:3000](http://localhost:3000)**
+
+It is recommended to run before restarting
+
+    sh crash-project.sh
+
+### Clear docker ###
+
+    sh crash-project.sh
+    
 
 ### Database ###
 
@@ -35,6 +34,3 @@ After deploying the docker (this lasts a long time). Run the second terminal and
 Or change it in the project
 
 
-### Clear docker ###
-
-    sh crash-project.sh

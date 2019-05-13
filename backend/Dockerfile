@@ -1,10 +1,9 @@
-FROM node:latest
+FROM node:8
 
-WORKDIR /var/www/backend
+WORKDIR /var/www/back
 
 COPY . ./
 
-RUN apt-get -y update
 RUN npm install
 
 EXPOSE 8888
