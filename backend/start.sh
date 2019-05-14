@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-sleep 25
+sleep "25"
 npx runmigration
 node_modules/.bin/sequelize db:seed:all
 

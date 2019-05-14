@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
 
@@ -21,8 +21,6 @@ services:
       - db
     depends_on:
       - db
-    environment:
-      DATABASE_URL: mysql://mysql@db
 
   frontend-react:
     build: ./frontend-react
