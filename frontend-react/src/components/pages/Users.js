@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import axios from 'axios';
-import ApiList from './../../../ApiList';
+import axios from 'axios/index';
+import ApiList from '../../ApiList';
 
 
 import  { connect } from 'react-redux';
@@ -91,24 +91,22 @@ class Users extends Component {
 
     //FOR TABLE
     handleSearch = (e, { value }) => {
-        this.getUsers({
-            search: value
-        });
+        this.setState({sortPage: 1, sortSearch: value}, this.getUsers);
     };
 
     handleSort = colName => () => {
         if (this.state.sortColumn !== colName) {
-            this.setState({sortColumn: colName, sortDirection: 'ascending'}, ()=>{this.getUsers()});
+            this.setState({sortColumn: colName, sortDirection: 'ascending'}, this.getUsers);
             return
         }
 
         const direction = (this.state.sortDirection === 'ascending' ? 'descending' : 'ascending');
 
-        this.setState({ sortDirection: direction }, ()=>{this.getUsers()});
+        this.setState({ sortDirection: direction }, this.getUsers);
     };
 
     handlePaginationChange = (e, { activePage }) => {
-        this.setState({sortPage: activePage}, ()=>{this.getUsers()});
+        this.setState({sortPage: activePage}, this.getUsers);
     };
 
 

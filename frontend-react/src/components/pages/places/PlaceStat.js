@@ -12,12 +12,13 @@ import {
 } from "semantic-ui-react";
 
 import conf from "../../../const/conf";
+import Chart from "./include/Chart";
 
 const mapStateToProps = state => ({
     ...state
 });
 
-class Place extends Component{
+class PlaceStat extends Component{
     constructor(props) {
         super(props);
 
@@ -72,10 +73,18 @@ class Place extends Component{
         }
     };
 
+    viewChart = () => {
+        if (this.state.place) {
+            return (
+                <Chart placeId={this.props.match.params.id} />
+            );
+        }
+    };
+
     render() {
         return (
             <div>
-                <h3>Просмотр места</h3>
+                <h3>Статистика</h3>
                 <Segment>
                 {
                     this.viewPlace()
@@ -84,9 +93,12 @@ class Place extends Component{
                 {
                     this.viewReviews()
                 }
+                {
+                    this.viewChart()
+                }
             </div>
         );
     }
 }
 
-export default connect(mapStateToProps)(Place);
+export default connect(mapStateToProps)(PlaceStat);

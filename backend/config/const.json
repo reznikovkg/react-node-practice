@@ -12,6 +12,10 @@
       "CODE": "302",
       "MESSAGE": "Найдено"
     },
+    "BAD_REQUEST": {
+      "CODE": "400",
+      "MESSAGE": "Ошибка валидации"
+    },
     "FORBIDDEN": {
       "CODE": "403",
       "MESSAGE": "Нет доступа"

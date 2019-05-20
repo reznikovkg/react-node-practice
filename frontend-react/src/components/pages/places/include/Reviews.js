@@ -182,7 +182,11 @@ class Reviews extends Component {
         this.setState({
             formComment: comment,
             formRating: rating
-        });
+        }, () => {
+            let t = document.getElementById("textEnter");
+            t.focus();
+            t.scrollIntoView();
+        } );
     };
 
     viewFormReview = () => {
@@ -211,6 +215,7 @@ class Reviews extends Component {
                         </Comment.Metadata>
                         <Comment.Text>
                             <Form.TextArea rows={2} placeholder='Ваш отзыв' value={this.state.formComment}
+                                           id='textEnter'
                                            onChange={ this.handleChangeFormComment }/>
                         </Comment.Text>
                         <Comment.Actions>

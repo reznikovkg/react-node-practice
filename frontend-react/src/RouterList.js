@@ -8,7 +8,8 @@ import Profile from './components/pages/Profile';
 
 import Places from './components/pages/places/Places';
 import Place from "./components/pages/places/Place";
-import Users from "./components/pages/places/Users";
+import PlaceStat from "./components/pages/places/PlaceStat";
+import Users from "./components/pages/Users";
 
 const RouterList = {
     'homepage': {
@@ -41,6 +42,15 @@ const RouterList = {
         },
         component: Place,
         access: 'all'
+    },
+
+    'placeStat': {
+        path: '/place-stat/:id',
+        pathWithParams: (id) => {
+            return `/place-stat/${id}`
+        },
+        component: PlaceStat,
+        access: 'business'
     },
 
     'places': {

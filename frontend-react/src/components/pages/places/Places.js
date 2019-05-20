@@ -154,24 +154,22 @@ class Places extends Component {
 
     //FOR TABLE
     handleSearch = (e, { value }) => {
-        this.getPlaces({
-            search: value
-        });
+        this.setState({ sortPage: 1, sortSearch: value}, this.getPlaces);
     };
 
     handleSort = colName => () => {
         if (this.state.sortColumn !== colName) {
-            this.setState({sortColumn: colName, sortDirection: 'ascending'}, ()=>{this.getPlaces()});
+            this.setState({sortColumn: colName, sortDirection: 'ascending'}, this.getPlaces);
             return
         }
 
         const direction = (this.state.sortDirection === 'ascending' ? 'descending' : 'ascending');
 
-        this.setState({ sortDirection: direction }, ()=>{this.getPlaces()});
+        this.setState({ sortDirection: direction }, this.getPlaces);
     };
 
     handlePaginationChange = (e, { activePage }) => {
-        this.setState({sortPage: activePage}, ()=>{this.getPlaces()});
+        this.setState({sortPage: activePage}, this.getPlaces);
     };
 
     //FOR FORM
@@ -421,7 +419,9 @@ class Places extends Component {
                                             (()=>{
                                                 if (this.props.userReducer.userData.type === 'business') {
                                                     return(
-                                                        <Button size='mini'>Статистика</Button>
+                                                        <Link to={RouterList.placeStat.pathWithParams(place.id)} >
+                                                            <Button size='mini'>Статистика</Button>
+                                                        </Link>
                                                     );
                                                 }
                                             })()

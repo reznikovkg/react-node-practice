@@ -39,6 +39,8 @@ app.get('/removePlaces', function (req, res, next) {
         }
     }).then(() => {
         res.status(status.OK.CODE).send({message: status.OK.MESSAGE});
+    }).catch((error) => {
+        res.status(status.INTERVAL_SERVER_ERROR.CODE).send({error: status.INTERVAL_SERVER_ERROR.MESSAGE});
     });
 
 });
@@ -52,6 +54,8 @@ app.get('/removeReview', function (req, res, next) {
         }
     }).then(() => {
         res.status(status.OK.CODE).send({message: status.OK.MESSAGE});
+    }).catch((error) => {
+        res.status(status.INTERVAL_SERVER_ERROR.CODE).send({error: status.INTERVAL_SERVER_ERROR.MESSAGE});
     });
 
 });
@@ -78,13 +82,15 @@ app.get('/generatedPlaces', function (req, res, next) {
                     userId: user.id
                 });
 
-                place.save().then(() => {
-
+                place.save().then((place) => {
+                    res.status(status.OK.CODE).send({message: status.OK.MESSAGE});
+                }).catch(()=>{
+                    res.status(status.INTERVAL_SERVER_ERROR.CODE).send({'message': status.INTERVAL_SERVER_ERROR.MESSAGE});
                 });
             });
         }
-
-        res.status(status.OK.CODE).send({message: status.OK.MESSAGE});
+    }).catch((error) => {
+        res.status(status.INTERVAL_SERVER_ERROR.CODE).send({error: status.INTERVAL_SERVER_ERROR.MESSAGE});
     });
 });
 
@@ -121,6 +127,8 @@ app.get('/generatedUsers', function (req, res, next) {
         }
 
         res.status(status.OK.CODE).send({message: status.OK.MESSAGE});
+    }).catch((error) => {
+        res.status(status.INTERVAL_SERVER_ERROR.CODE).send({error: status.INTERVAL_SERVER_ERROR.MESSAGE});
     });
 });
 
@@ -194,6 +202,8 @@ app.get('/removeUser', function (req, res, next) {
         }
     }).then(() => {
         res.status(status.OK.CODE).send({message: status.OK.MESSAGE});
+    }).catch((error) => {
+        res.status(status.INTERVAL_SERVER_ERROR.CODE).send({error: status.INTERVAL_SERVER_ERROR.MESSAGE});
     });
 
 });

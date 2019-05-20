@@ -42,6 +42,8 @@ app.get('/removeReview', function (req, res, next) {
         }
     }).then(() => {
         res.status(status.OK.CODE).send({message: status.OK.MESSAGE});
+    }).catch((error) => {
+        res.status(status.INTERVAL_SERVER_ERROR.CODE).send({error: status.INTERVAL_SERVER_ERROR.MESSAGE});
     });
 
 });
@@ -66,7 +68,6 @@ app.get('/getReviews', function (req, res, next) {
     const dateWeekAgo = dateNow - 86400000 * 7;
     const dateMonthAgo = dateNow - 86400000 * 30;
     const dateYearAgo = dateNow - 86400000 * 365;
-
 
     models.Reviews.findAll({
         where: {
@@ -150,14 +151,14 @@ app.get('/getReviews', function (req, res, next) {
             rating: []
         };
 
-        for (let i = 0; i < reviewsToChart.date.length; i++) {
-            reviewsToChart.rating.push(reviewsOut[reviewsToChart.date[i]].avgRating);
-        }
+        reviewsToChart.date.map((rev) => {
+            reviewsToChart.rating.push(reviewsOut[rev].avgRating);
+        });
 
         res.status(status.OK.CODE).send({ reviewsToChart, means});
+    }).catch((error) => {
+        res.status(status.INTERVAL_SERVER_ERROR.CODE).send({error: status.INTERVAL_SERVER_ERROR.MESSAGE});
     });
-
-
 });
 
 module.exports = app;

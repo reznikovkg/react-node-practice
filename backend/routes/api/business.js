@@ -67,10 +67,10 @@ app.post('/createPlaces', (req, res, next) => {
         picture
     });
 
-    place.save().then(() => {
+    place.save().then((place) => {
         res.status(status.OK.CODE).send({'message': 'Упешно'});
     }).catch(()=>{
-        res.status(status.INTERVAL_SERVER_ERROR.CODE).send({'message': 'Ошибка'});
+        res.status(status.INTERVAL_SERVER_ERROR.CODE).send({'message': status.INTERVAL_SERVER_ERROR.MESSAGE});
     });
 });
 
@@ -87,6 +87,8 @@ app.get('/removePlaces', function (req, res, next) {
         }
     }).then(() => {
         res.status(status.OK.CODE).send({message: status.OK.MESSAGE});
+    }).catch((error) => {
+        res.status(status.INTERVAL_SERVER_ERROR.CODE).send({error: status.INTERVAL_SERVER_ERROR.MESSAGE});
     });
 
 });

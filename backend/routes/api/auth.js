@@ -19,7 +19,7 @@ app.get('/login', function (req, res, next) {
         (password.length > 0) &&
         (/^[a-zA-Z0-9*#!+]+$/.test(password))))
     {
-        res.status(status.INTERVAL_SERVER_ERROR.CODE).send({error: 'Ошибка валидации'});
+        res.status(status.BAD_REQUEST.CODE).send({error: status.BAD_REQUEST.MESSAGE});
         return;
     }
 
@@ -54,7 +54,7 @@ app.get('/login', function (req, res, next) {
             })
 
         }).catch((error) => {
-            res.status(status.INTERVAL_SERVER_ERROR.CODE).send({error: 'Ошибка'});
+            res.status(status.INTERVAL_SERVER_ERROR.CODE).send({error: status.INTERVAL_SERVER_ERROR.MESSAGE});
         });
 });
 
@@ -99,7 +99,7 @@ app.post('/register', upload.single('file'), (req, res, next) => {
         (/^[a-zA-Z0-9*#!+]+$/.test(password)) &&
         (/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(email))))
     {
-        res.status(status.INTERVAL_SERVER_ERROR.CODE).send({error: 'Ошибка валидации'});
+        res.status(status.INTERVAL_SERVER_ERROR.CODE).send({error: status.BAD_REQUEST.MESSAGE});
         return;
     }
 
@@ -135,6 +135,8 @@ app.post('/register', upload.single('file'), (req, res, next) => {
         });
 
         res.status(status.OK.CODE).send({message: status.OK.MESSAGE});
+    }).catch((error) => {
+        res.status(status.INTERVAL_SERVER_ERROR.CODE).send({error: status.INTERVAL_SERVER_ERROR.MESSAGE});
     });
 });
 
@@ -152,7 +154,7 @@ app.get('/connect', function (req, res, next) {
                 return;
             }
 
-            res.send({
+            res.status(status.OK.CODE).send({
                 'id': user.id,
                 'isActivate': user.isActivate,
                 'type': user.type,
@@ -163,6 +165,8 @@ app.get('/connect', function (req, res, next) {
                 'address': user.address,
                 'photo': user.photo
             });
+        }).catch((error) => {
+            res.status(status.INTERVAL_SERVER_ERROR.CODE).send({error: status.INTERVAL_SERVER_ERROR.MESSAGE});
         });
 });
 
@@ -183,8 +187,8 @@ app.get('/activate', function (req, res, next) {
             })
 
         }).catch((error) => {
-        res.status(status.INTERVAL_SERVER_ERROR.CODE).send({error: 'Ошибка'});
-    });
+            res.status(status.INTERVAL_SERVER_ERROR.CODE).send({error: status.INTERVAL_SERVER_ERROR.MESSAGE});
+        });
 });
 
 module.exports = app;
